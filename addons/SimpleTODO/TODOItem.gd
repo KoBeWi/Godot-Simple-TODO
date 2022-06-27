@@ -8,8 +8,6 @@ var item_placement_holder: Panel
 var main: Control
 var undo_redo: UndoRedo
 
-signal delete
-
 var initial_item_index = 0
 
 # The main TODO scene column container node
@@ -34,7 +32,7 @@ func _ready() -> void:
 	call_deferred("text_changed")
 
 func delete_pressed() -> void:
-	emit_signal("delete")
+	delete_item()
 
 func request_save() -> void:
 	get_tree().get_nodes_in_group("__todo_plugin__").front().save_data()
@@ -178,4 +176,12 @@ func move_item(index):
 	undo_redo.add_undo_method(parent_column, "request_save")
 	undo_redo.add_undo_property(self, "parent_column", parent_column)
 
+	undo_redo.commit_action()
+
+func delete_item():
+	undo_redo.create_action("Delete Item")
+	undo_redo.add_do_method(parent_column.item_container, "remove_child", self)
+	undo_redo.add_do_method(parent_column, "request_save")
+	undo_redo.add_undo_method(parent_column.item_container, "add_child", self)
+	undo_redo.add_undo_method(parent_column, "request_save")
 	undo_redo.commit_action()

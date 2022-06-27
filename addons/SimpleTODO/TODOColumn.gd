@@ -71,8 +71,6 @@ func add_item(from_button := false) -> Control:
 	var item = preload("res://addons/SimpleTODO/TODOItem.tscn").instance()
 	item.parent_column = self
 	item.main = main
-	
-	item.connect("delete", self, "delete_item", [item])
 
 	undo_redo.create_action("Add Item")
 	undo_redo.add_do_method(item_container, "add_child", item)
@@ -87,15 +85,6 @@ func add_item(from_button := false) -> Control:
 		item.get_node("Text").call_deferred("select_all")
 	
 	return item
-
-func delete_item(item):
-	undo_redo.create_action("Delete Item")
-	undo_redo.add_do_method(item_container, "remove_child", item)
-	undo_redo.add_do_method(self, "request_save")
-	undo_redo.add_undo_method(item_container, "add_child", item)
-	undo_redo.add_undo_reference(item)
-	undo_redo.add_undo_method(self, "request_save")
-	undo_redo.commit_action()
 
 func delete_column() -> void:
 	emit_signal("delete")
