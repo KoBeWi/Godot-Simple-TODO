@@ -73,7 +73,6 @@ func add_item(from_button := false) -> Control:
 	item.main = main
 	
 	item.connect("delete", self, "delete_item", [item])
-	item.connect("move", self, "move_item", [item])
 
 	undo_redo.create_action("Add Item")
 	undo_redo.add_do_method(item_container, "add_child", item)

@@ -27,30 +27,33 @@ func _enter_tree():
 func _ready() -> void:
 	set_process_input(false)
 
-func get_state():
-	var new_minimized_tabs = []
-	
-	for column in todo_screen.column_container.get_children():
-		new_minimized_tabs.append(column.minimized)
-	
-	return {"minimized_tabs": new_minimized_tabs}
+func set_window_layout(configuration: ConfigFile):
+	if configuration.has_section("SimpleTODO"):
+		var minimized_tabs = configuration.get_value("SimpleTODO", "minimized_tabs")
+		
+		if minimized_tabs.size() <= 0:
+			return
+		
+		for i in todo_screen.column_container.get_child_count():
+			var column = todo_screen.column_container.get_children()[i]
+			column.minimized = minimized_tabs[i]
 
-func set_state(val: Dictionary):
-	var minimized_tabs = val.get("minimized_tabs", [])
+func get_window_layout(configuration: ConfigFile):
+	var new_minimized_tabs = []
+
+	if todo_screen:
+		for column in todo_screen.column_container.get_children():
+			new_minimized_tabs.append(column.minimized)
 	
-	if minimized_tabs.size() <= 0:
-		return
-	
-	for i in todo_screen.column_container.get_child_count():
-		var column = todo_screen.column_container.get_children()[i]
-		column.minimized = minimized_tabs[i]
+	configuration.set_value("SimpleTODO", "minimized_tabs", new_minimized_tabs)
 
 func _exit_tree():
 	todo_screen.queue_free()
 
 func make_visible(visible: bool) -> void:
-	todo_screen.visible = visible
-	set_process_input(visible)
+	if todo_screen:
+		todo_screen.visible = visible
+		set_process_input(visible)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
