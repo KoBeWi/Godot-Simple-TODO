@@ -3,24 +3,16 @@ extends HBoxContainer
 
 onready var text_field = $Text
 onready var label_hack = $Text/HackLabel
-
 var item_placement_holder: Panel
 var main: Control
 var undo_redo: UndoRedo
-
 var initial_item_index = 0
-
 # The main TODO scene column container node
 var main_column_container: HBoxContainer
-
 var parent_column: PanelContainer
-
 var next_parent_column: PanelContainer
-
 var current_drag_item_index = 0
-
 var is_dragging = false
-
 var item_margin = 20
 
 func _ready() -> void:
@@ -52,7 +44,7 @@ func _process(_delta):
 			var item = item_under_mouse.item
 			next_parent_column = column
 			
-			if not column_items == item_placement_holder.get_parent():
+			if column_items != item_placement_holder.get_parent():
 				item_placement_holder.get_parent().remove_child(item_placement_holder)
 				column_items.add_child(item_placement_holder)
 			
@@ -68,10 +60,12 @@ func _process(_delta):
 
 func get_column_from_mouse_position() -> PanelContainer:
 	var mouse_position = main.column_container.get_local_mouse_position()
+	
 	for i in main.column_container.get_child_count():
 		var child = main.column_container.get_child(i)
 		var rect: Rect2 = child.get_rect()
-		if rect.has_point(mouse_position):
+
+		if rect.has_point(Vector2(mouse_position.x, 0)):
 			return child
 	return null
 
@@ -102,7 +96,7 @@ func get_column_item_from_mouse_position():
 # Handles left click being pressed on the drag panel
 func _on_DragPanel_gui_input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == 1 and event.pressed and not is_dragging:
+		if event.button_index == BUTTON_LEFT and event.pressed and !is_dragging:
 			initial_item_index = get_index()
 			
 			get_parent().remove_child(self)
@@ -116,6 +110,8 @@ func _on_DragPanel_gui_input(event):
 			size_flags_vertical = 0
 			
 			main.add_child(self)
+
+			set_process(true)
 			
 			# Set dragging to true to tell _process to now handle dragging
 			is_dragging = true
@@ -131,9 +127,9 @@ func _on_DragPanel_gui_input(event):
 # Handles left click being released
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == 1 and not event.pressed and is_dragging:
-			# Set dragging to false to tell _process that we are no
-			# longer dragging this todo item
+		if event.button_index == BUTTON_LEFT and !event.pressed and is_dragging:
+			set_process(false)
+
 			is_dragging = false
 			
 			get_parent().remove_child(self)

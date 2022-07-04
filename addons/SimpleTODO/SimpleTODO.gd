@@ -41,9 +41,8 @@ func set_window_layout(configuration: ConfigFile):
 func get_window_layout(configuration: ConfigFile):
 	var new_minimized_tabs = []
 
-	if todo_screen:
-		for column in todo_screen.column_container.get_children():
-			new_minimized_tabs.append(column.minimized)
+	for column in todo_screen.column_container.get_children():
+		new_minimized_tabs.append(column.minimized)
 	
 	configuration.set_value("SimpleTODO", "minimized_tabs", new_minimized_tabs)
 
@@ -51,9 +50,8 @@ func _exit_tree():
 	todo_screen.queue_free()
 
 func make_visible(visible: bool) -> void:
-	if todo_screen:
-		todo_screen.visible = visible
-		set_process_input(visible)
+	todo_screen.visible = visible
+	set_process_input(visible)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:

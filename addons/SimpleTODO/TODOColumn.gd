@@ -7,22 +7,18 @@ onready var bottom_separator = $VBoxContainer/BottomSeparator
 onready var scroll_container = $VBoxContainer/ScrollContainer
 onready var actions = $VBoxContainer/Actions
 onready var minimize_button = $VBoxContainer/Head/Minimize
-
 onready var name_edit = $VBoxContainer/Head/Name
 onready var item_container = $VBoxContainer/ScrollContainer/Items
 onready var counter = $VBoxContainer/Head/Counter
 onready var delete_button = $VBoxContainer/Actions/DeleteColumn
 onready var timer = $Timer
-
 var undo_redo: UndoRedo
 var minimized = false setget set_minimized
 var main: Control
-
 var item_placement_holder: Panel
 var is_dragging = false
 var initial_item_index = 0
 var current_drag_item_index = 0
-
 var item_margin = 20
 
 func set_minimized(val):
@@ -30,34 +26,35 @@ func set_minimized(val):
 	
 	var new_text = "V"
 	
-	if not val:
+	if !val:
 		new_text = "^"
 
 	minimize_button.text = new_text
 	
-	top_separator.visible = not val
-	scroll_container.visible = not val
-	bottom_separator.visible = not val
-	actions.visible = not val
+	top_separator.visible = !val
+	scroll_container.visible = !val
+	bottom_separator.visible = !val
+	actions.visible = !val
 
 signal delete
 
 func _ready() -> void:
+	set_process(false)
 	item_placement_holder = main.item_placement_holder
 	delete_button.icon = get_icon("Remove", "EditorIcons")
 	counter.rect_min_size.x = delete_button.get_minimum_size().x
 	set_minimized(false)
 
-func _process(delta):
+func _process(_delta):
 	if is_dragging:
 		var mouse_position = main.get_local_mouse_position()
 		
-		var item_under_mouse = get_column_from_mouse_position()
+		var item_under_mouse = main.column_container.get_column_from_mouse_position()
 		if item_under_mouse:
 			if item_under_mouse:
 				var item_index = item_under_mouse.get_index()
 				
-				if not main.column_container == item_placement_holder.get_parent():
+				if main.column_container != item_placement_holder.get_parent():
 					item_placement_holder.get_parent().remove_child(item_placement_holder)
 					main.column_container.add_child(item_placement_holder)
 			
@@ -93,30 +90,18 @@ func update_counter() -> void:
 	counter.text = str(item_container.get_child_count())
 
 func request_save() -> void:
-	update_counter()
 	get_tree().get_nodes_in_group("__todo_plugin__").front().save_data()
 
-func name_changed(new_text: String) -> void:
+func name_changed(_new_text: String) -> void:
 	timer.start()
 
 func _on_Minimize_pressed():
-	set_minimized(not minimized)
-
-func get_column_from_mouse_position() -> PanelContainer:
-	var mouse_position = main.column_container.get_local_mouse_position()
-	
-	for i in main.column_container.get_child_count():
-		var child = main.column_container.get_child(i)
-		var rect: Rect2 = child.get_rect()
-
-		if rect.has_point(Vector2(mouse_position.x, 0)):
-			return child
-	return null
+	set_minimized(!minimized)
 
 # Handles left click being pressed on the drag panel
 func _on_DragPanel_gui_input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == 1 and event.pressed and not is_dragging:
+		if event.button_index == BUTTON_LEFT and event.pressed and !is_dragging:
 			initial_item_index = get_index()
 			
 			get_parent().remove_child(self)
@@ -127,6 +112,8 @@ func _on_DragPanel_gui_input(event):
 			
 			main.add_child(self)
 			
+			set_process(true)
+
 			# Set dragging to true to tell _process to now handle dragging
 			is_dragging = true
 			
@@ -142,7 +129,9 @@ func _on_DragPanel_gui_input(event):
 # Handles left click being released
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == 1 and not event.pressed and is_dragging:
+		if event.button_index == BUTTON_LEFT and !event.pressed and is_dragging:
+			set_process(false)
+
 			is_dragging = false
 			
 			get_parent().remove_child(self)
@@ -159,12 +148,12 @@ func _input(event):
 
 			main.column_container.add_child(self)
 
-			move_item(current_drag_item_index)
+			move_column(current_drag_item_index)
 
 			current_drag_item_index = 0
 			initial_item_index = 0
 
-func move_item(index):
+func move_column(index):
 	undo_redo.create_action("Move Column")
 
 	var current_index = initial_item_index
@@ -175,3 +164,9 @@ func move_item(index):
 	undo_redo.add_undo_method(self, "request_save")
 
 	undo_redo.commit_action()
+
+func _on_Items_child_entered_tree(node):
+	update_counter()
+
+func _on_Items_child_exited_tree(node):
+	update_counter()

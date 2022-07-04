@@ -3,11 +3,8 @@ extends Control
 
 onready var column_container = $VBoxContainer/ScrollContainer/Columns
 onready var vbox_container = $VBoxContainer
-
-var undo_redo: UndoRedo
-
-onready var item_placement_holder_scene = preload("res://addons/SimpleTODO/ItemPlacementHolder.tscn")
 var item_placement_holder: Panel
+var undo_redo: UndoRedo
 
 func _ready() -> void:
 	item_placement_holder = create_drag_placement_holder()
@@ -15,7 +12,7 @@ func _ready() -> void:
 	undo_redo = UndoRedo.new()
 
 func create_drag_placement_holder() -> Panel:
-	var new_holder = item_placement_holder_scene.instance()
+	var new_holder = preload("res://addons/SimpleTODO/ItemPlacementHolder.tscn").instance()
 	new_holder.visible = false
 	add_child(new_holder)
 	

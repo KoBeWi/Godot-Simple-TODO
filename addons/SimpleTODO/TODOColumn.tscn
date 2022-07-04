@@ -124,6 +124,8 @@ one_shot = true
 [connection signal="gui_input" from="VBoxContainer/Head/DragPanel" to="." method="_on_DragPanel_gui_input"]
 [connection signal="text_changed" from="VBoxContainer/Head/Name" to="." method="name_changed"]
 [connection signal="pressed" from="VBoxContainer/Head/Minimize" to="." method="_on_Minimize_pressed"]
+[connection signal="child_entered_tree" from="VBoxContainer/ScrollContainer/Items" to="." method="_on_Items_child_entered_tree"]
+[connection signal="child_exited_tree" from="VBoxContainer/ScrollContainer/Items" to="." method="_on_Items_child_exited_tree"]
 [connection signal="pressed" from="VBoxContainer/Actions/AddItem" to="." method="add_item" binds= [ true ]]
 [connection signal="pressed" from="VBoxContainer/Actions/DeleteColumn" to="." method="delete_column"]
 [connection signal="timeout" from="Timer" to="." method="request_save"]
