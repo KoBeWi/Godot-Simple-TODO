@@ -22,9 +22,29 @@ func _enter_tree():
 	
 	get_editor_interface().get_editor_viewport().add_child(todo_screen)
 	load_data()
+	print("TODO loaded")
 
 func _ready() -> void:
 	set_process_input(false)
+
+func set_window_layout(configuration: ConfigFile):
+	if configuration.has_section("SimpleTODO"):
+		var minimized_tabs = configuration.get_value("SimpleTODO", "minimized_tabs")
+		
+		if minimized_tabs.size() <= 0:
+			return
+		
+		for i in todo_screen.column_container.get_child_count():
+			var column = todo_screen.column_container.get_children()[i]
+			column.minimized = minimized_tabs[i]
+
+func get_window_layout(configuration: ConfigFile):
+	var new_minimized_tabs = []
+
+	for column in todo_screen.column_container.get_children():
+		new_minimized_tabs.append(column.minimized)
+	
+	configuration.set_value("SimpleTODO", "minimized_tabs", new_minimized_tabs)
 
 func _exit_tree():
 	todo_screen.queue_free()
@@ -70,7 +90,7 @@ func load_data():
 	for section in data.get_sections():
 		var column = todo_screen.add_column()
 		column.name_edit.text = section
-		
+
 		for item in data.get_section_keys(section):
 			if item == "__none__":
 				continue
@@ -81,4 +101,3 @@ func load_data():
 	todo_screen.undo_redo.clear_history()
 	
 	is_loading = false
-	print("TODO loaded")

@@ -1,16 +1,28 @@
 tool
-extends VBoxContainer
+extends Control
 
-onready var column_container = $ScrollContainer/Columns
-
+onready var column_container = $VBoxContainer/ScrollContainer/Columns
+onready var vbox_container = $VBoxContainer
+var item_placement_holder: Panel
 var undo_redo: UndoRedo
 
 func _ready() -> void:
+	item_placement_holder = create_drag_placement_holder()
+	
 	undo_redo = UndoRedo.new()
+
+func create_drag_placement_holder() -> Panel:
+	var new_holder = preload("res://addons/SimpleTODO/ItemPlacementHolder.tscn").instance()
+	new_holder.visible = false
+	add_child(new_holder)
+	
+	return new_holder
 
 func add_column(from_button := false) -> Control:
 	var column = preload("res://addons/SimpleTODO/TODOColumn.tscn").instance()
+	column.main = self
 	column.undo_redo = undo_redo
+	
 	column.connect("delete", self, "delete_column", [column])
 	
 	undo_redo.create_action("Add Column")
@@ -22,8 +34,8 @@ func add_column(from_button := false) -> Control:
 	undo_redo.commit_action()
 	
 	if from_button:
-		column.get_node("VBoxContainer/HBoxContainer2/Name").call_deferred("grab_focus")
-		column.get_node("VBoxContainer/HBoxContainer2/Name").call_deferred("select_all")
+		column.name_edit.call_deferred("grab_focus")
+		column.name_edit.call_deferred("select_all")
 	
 	return column
 

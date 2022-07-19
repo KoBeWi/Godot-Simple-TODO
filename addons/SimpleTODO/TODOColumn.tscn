@@ -13,7 +13,7 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="Image" id=4]
+[sub_resource type="Image" id=6]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -22,50 +22,60 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=2]
+[sub_resource type="ImageTexture" id=5]
 flags = 4
 flags = 4
-image = SubResource( 4 )
+image = SubResource( 6 )
 size = Vector2( 16, 16 )
 
 [node name="TODOColumn" type="PanelContainer"]
 margin_right = 400.0
-margin_bottom = 480.0
+margin_bottom = 78.0
 rect_min_size = Vector2( 400, 0 )
-size_flags_vertical = 0
+size_flags_vertical = 2
 custom_styles/panel = SubResource( 3 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 396.0
-margin_bottom = 476.0
+margin_bottom = 74.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Head" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 392.0
 margin_bottom = 24.0
 
-[node name="Name" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
-margin_right = 360.0
+[node name="DragPanel" type="Panel" parent="VBoxContainer/Head"]
+margin_right = 20.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 20, 0 )
+mouse_default_cursor_shape = 13
+
+[node name="Name" type="LineEdit" parent="VBoxContainer/Head"]
+margin_left = 24.0
+margin_right = 337.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Column name"
 
-[node name="Counter" type="Label" parent="VBoxContainer/HBoxContainer2"]
-margin_left = 364.0
+[node name="Counter" type="Label" parent="VBoxContainer/Head"]
+margin_left = 341.0
 margin_top = 5.0
-margin_right = 392.0
+margin_right = 369.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 28, 0 )
 text = "0"
 align = 1
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="Minimize" type="Button" parent="VBoxContainer/Head"]
+margin_left = 373.0
+margin_right = 392.0
+margin_bottom = 24.0
+text = "^"
+
+[node name="TopSeparator" type="HSeparator" parent="VBoxContainer"]
 margin_top = 28.0
 margin_right = 392.0
 margin_bottom = 32.0
@@ -73,46 +83,49 @@ margin_bottom = 32.0
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 margin_top = 36.0
 margin_right = 392.0
-margin_bottom = 438.0
+margin_bottom = 36.0
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 scroll_vertical_enabled = false
 
 [node name="Items" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 margin_right = 392.0
-margin_bottom = 402.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
-margin_top = 442.0
+[node name="BottomSeparator" type="HSeparator" parent="VBoxContainer"]
+margin_top = 40.0
 margin_right = 392.0
-margin_bottom = 446.0
+margin_bottom = 44.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 450.0
+[node name="Actions" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 48.0
 margin_right = 392.0
-margin_bottom = 472.0
+margin_bottom = 70.0
 
-[node name="AddItem" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="AddItem" type="Button" parent="VBoxContainer/Actions"]
 margin_right = 360.0
 margin_bottom = 22.0
 hint_tooltip = "Add item"
 size_flags_horizontal = 3
 text = "+"
 
-[node name="DeleteColumn" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="DeleteColumn" type="Button" parent="VBoxContainer/Actions"]
 margin_left = 364.0
 margin_right = 392.0
 margin_bottom = 22.0
 hint_tooltip = "Delete column"
-icon = SubResource( 2 )
+icon = SubResource( 5 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
 
-[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/Name" to="." method="name_changed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/AddItem" to="." method="add_item" binds= [ true ]]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/DeleteColumn" to="." method="delete_column"]
+[connection signal="gui_input" from="VBoxContainer/Head/DragPanel" to="." method="_on_DragPanel_gui_input"]
+[connection signal="text_changed" from="VBoxContainer/Head/Name" to="." method="name_changed"]
+[connection signal="pressed" from="VBoxContainer/Head/Minimize" to="." method="_on_Minimize_pressed"]
+[connection signal="child_entered_tree" from="VBoxContainer/ScrollContainer/Items" to="." method="_on_Items_child_entered_tree"]
+[connection signal="child_exited_tree" from="VBoxContainer/ScrollContainer/Items" to="." method="_on_Items_child_exited_tree"]
+[connection signal="pressed" from="VBoxContainer/Actions/AddItem" to="." method="add_item" binds= [ true ]]
+[connection signal="pressed" from="VBoxContainer/Actions/DeleteColumn" to="." method="delete_column"]
 [connection signal="timeout" from="Timer" to="." method="request_save"]
