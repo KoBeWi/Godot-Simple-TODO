@@ -49,7 +49,7 @@ func _process(_delta):
 	if is_dragging:
 		var mouse_position = main.get_local_mouse_position()
 		
-		var item_under_mouse = main.column_container.get_column_from_mouse_position()
+		var item_under_mouse = get_column_from_mouse_position()
 		if item_under_mouse:
 			if item_under_mouse:
 				var item_index = item_under_mouse.get_index()
@@ -164,6 +164,17 @@ func move_column(index):
 	undo_redo.add_undo_method(self, "request_save")
 
 	undo_redo.commit_action()
+
+func get_column_from_mouse_position() -> PanelContainer:
+	var mouse_position = main.column_container.get_local_mouse_position()
+	
+	for i in main.column_container.get_child_count():
+		var child = main.column_container.get_child(i)
+		var rect: Rect2 = child.get_rect()
+
+		if rect.has_point(Vector2(mouse_position.x, 0)):
+			return child
+	return null
 
 func _on_Items_child_entered_tree(node):
 	update_counter()
