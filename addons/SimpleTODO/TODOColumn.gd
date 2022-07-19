@@ -12,6 +12,7 @@ onready var item_container = $VBoxContainer/ScrollContainer/Items
 onready var counter = $VBoxContainer/Head/Counter
 onready var delete_button = $VBoxContainer/Actions/DeleteColumn
 onready var timer = $Timer
+
 var undo_redo: UndoRedo
 var minimized = false setget set_minimized
 var main: Control
@@ -23,13 +24,8 @@ var item_margin = 20
 
 func set_minimized(val):
 	minimized = val
-	
-	var new_text = "V"
-	
-	if !val:
-		new_text = "^"
 
-	minimize_button.text = new_text
+	minimize_button.icon = get_icon("ArrowDown" if minimized else "ArrowUp", "EditorIcons")
 	
 	top_separator.visible = !val
 	scroll_container.visible = !val

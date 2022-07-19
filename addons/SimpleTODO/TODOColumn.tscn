@@ -55,25 +55,24 @@ mouse_default_cursor_shape = 13
 
 [node name="Name" type="LineEdit" parent="VBoxContainer/Head"]
 margin_left = 24.0
-margin_right = 337.0
+margin_right = 344.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Column name"
 
 [node name="Counter" type="Label" parent="VBoxContainer/Head"]
-margin_left = 341.0
+margin_left = 348.0
 margin_top = 5.0
-margin_right = 369.0
+margin_right = 376.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 28, 0 )
 text = "0"
 align = 1
 
 [node name="Minimize" type="Button" parent="VBoxContainer/Head"]
-margin_left = 373.0
+margin_left = 380.0
 margin_right = 392.0
 margin_bottom = 24.0
-text = "^"
 
 [node name="TopSeparator" type="HSeparator" parent="VBoxContainer"]
 margin_top = 28.0
