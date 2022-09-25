@@ -10,6 +10,10 @@ The plugin has full undo support.
 
 ![](https://github.com/KoBeWi/Godot-Simple-TODO/blob/master/Media/ReadmeUndo.gif)
 
+And drag and drop support (contributed by @Nukiloco).
+
+![](https://github.com/KoBeWi/Godot-Simple-TODO/blob/master/Media/ReadmeDragAndDrop.gif)
+
 ## Data
 
 Data of your columns is stored in a simple .cfg file. You can edit it by hand (the item names don't matter btw), but do so only when the plugin is not active. The plugin automatically saves all your changes. You can change the file where data is stored by modifying `DATA_FILE` constant in `SimpleTODO.gd`.
