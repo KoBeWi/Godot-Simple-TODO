@@ -10,7 +10,7 @@ The plugin has full undo support.
 
 ![](https://github.com/KoBeWi/Godot-Simple-TODO/blob/master/Media/ReadmeUndo.gif)
 
-And drag and drop support (contributed by @Nukiloco).
+And drag and drop support (contributed by [@Nukiloco](https://github.com/Nukiloco)).
 
 ![](https://github.com/KoBeWi/Godot-Simple-TODO/blob/master/Media/ReadmeDragAndDrop.gif)
 
