@@ -1,8 +1,11 @@
 tool
 extends Control
 
-onready var column_container = $VBoxContainer/ScrollContainer/Columns
+onready var column_container = $"%Columns"
 onready var vbox_container = $VBoxContainer
+onready var column_mirror = $"%ColumnMirror"
+onready var scroll_container = $"%ScrollContainer"
+
 var item_placement_holder: Panel
 var undo_redo: UndoRedo
 
@@ -10,6 +13,15 @@ func _ready() -> void:
 	item_placement_holder = create_drag_placement_holder()
 	
 	undo_redo = UndoRedo.new()
+	
+	scroll_container.get_v_scrollbar().connect("value_changed", self, "update_mirror")
+
+func update_mirror(v: float):
+	column_mirror.visible = v > column_mirror.get_child(0).rect_size.y
+
+func connect_scrollbar(to_object, to_method):
+	scroll_container.get_h_scrollbar().connect("value_changed", to_object, to_method)
+	scroll_container.get_v_scrollbar().connect("value_changed", to_object, to_method)
 
 func create_drag_placement_holder() -> Panel:
 	var new_holder = preload("res://addons/SimpleTODO/ItemPlacementHolder.tscn").instance()
@@ -50,3 +62,7 @@ func delete_column(column):
 
 func request_save() -> void:
 	get_tree().get_nodes_in_group("__todo_plugin__").front().save_data()
+
+func refresh_mirrors():
+	for column in column_container.get_children():
+		column.call_deferred("update_mirror", 0)

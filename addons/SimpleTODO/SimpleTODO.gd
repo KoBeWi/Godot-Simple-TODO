@@ -89,7 +89,7 @@ func load_data():
 	
 	for section in data.get_sections():
 		var column = todo_screen.add_column()
-		column.name_edit.text = section
+		column.set_name(section)
 
 		for item in data.get_section_keys(section):
 			if item == "__none__":

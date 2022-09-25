@@ -1,15 +1,15 @@
 tool
 extends PanelContainer
 
-onready var head = $VBoxContainer/Head
+onready var header = $VBoxContainer/Header
+onready var minimize_button = header.get_node("Minimize")
+onready var name_edit = header.get_node("Name")
+onready var counter = header.get_node("Counter")
 onready var top_separator = $VBoxContainer/TopSeparator
 onready var bottom_separator = $VBoxContainer/BottomSeparator
 onready var scroll_container = $VBoxContainer/ScrollContainer
 onready var actions = $VBoxContainer/Actions
-onready var minimize_button = $VBoxContainer/Head/Minimize
-onready var name_edit = $VBoxContainer/Head/Name
 onready var item_container = $VBoxContainer/ScrollContainer/Items
-onready var counter = $VBoxContainer/Head/Counter
 onready var delete_button = $VBoxContainer/Actions/DeleteColumn
 onready var timer = $Timer
 
@@ -21,11 +21,15 @@ var is_dragging = false
 var initial_item_index = 0
 var current_drag_item_index = 0
 var item_margin = 20
+var mirror_header
+var mirror_counter
 
 func set_minimized(val):
 	minimized = val
 
 	minimize_button.icon = get_icon("ArrowDown" if minimized else "ArrowUp", "EditorIcons")
+	if mirror_header:
+		mirror_header.get_node("Minimize").icon = get_icon("ArrowDown" if minimized else "ArrowUp", "EditorIcons")
 	
 	top_separator.visible = !val
 	scroll_container.visible = !val
@@ -40,8 +44,30 @@ func _ready() -> void:
 	delete_button.icon = get_icon("Remove", "EditorIcons")
 	counter.rect_min_size.x = delete_button.get_minimum_size().x
 	set_minimized(false)
+	
+	mirror_header = PanelContainer.new()
+	main.column_mirror.add_child(mirror_header)
+	mirror_header.add_stylebox_override("panel", get_stylebox("panel"))
+	mirror_header.add_child(preload("res://addons/SimpleTODO/ColumnHeader.tscn").instance())
+	mirror_header.get_child(0).get_node("Minimize").icon = get_icon("ArrowDown" if minimized else "ArrowUp", "EditorIcons")
+	mirror_header.get_child(0).get_node("Name").editable = false
+	mirror_counter = mirror_header.get_child(0).get_node("Counter")
+	main.connect_scrollbar(self, "update_mirror")
+	
+	header.get_node("DragPanel").connect("gui_input", self, "_on_DragPanel_gui_input")
+	mirror_header.get_child(0).get_node("DragPanel").connect("gui_input", self, "_on_DragPanel_gui_input")
+	
+	update_mirror(0)
 
-func _process(_delta):
+func set_name(column_name):
+	name_edit.text = column_name
+	mirror_header.get_child(0).get_node("Name").text = column_name
+
+func update_mirror(v):
+	mirror_header.rect_min_size = Vector2(rect_size.x, header.rect_size.y)
+	mirror_header.rect_global_position.x = rect_global_position.x
+
+func _process(delta):
 	if is_dragging:
 		var mouse_position = main.get_local_mouse_position()
 		
@@ -84,11 +110,13 @@ func delete_column() -> void:
 
 func update_counter() -> void:
 	counter.text = str(item_container.get_child_count())
+	mirror_counter.text = str(item_container.get_child_count())
 
 func request_save() -> void:
 	get_tree().get_nodes_in_group("__todo_plugin__").front().save_data()
 
 func name_changed(_new_text: String) -> void:
+	mirror_header.get_child(0).get_node("Name").text = _new_text
 	timer.start()
 
 func _on_Minimize_pressed():
@@ -148,6 +176,7 @@ func _input(event):
 
 			current_drag_item_index = 0
 			initial_item_index = 0
+			main.refresh_mirrors()
 
 func move_column(index):
 	undo_redo.create_action("Move Column")

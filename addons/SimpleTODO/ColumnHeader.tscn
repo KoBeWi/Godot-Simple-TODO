@@ -1,0 +1,32 @@
+[gd_scene format=2]
+
+[node name="Header" type="HBoxContainer"]
+margin_right = 392.0
+margin_bottom = 24.0
+
+[node name="DragPanel" type="Panel" parent="."]
+margin_right = 20.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 20, 0 )
+mouse_default_cursor_shape = 13
+
+[node name="Name" type="LineEdit" parent="."]
+margin_left = 24.0
+margin_right = 344.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Column name"
+
+[node name="Counter" type="Label" parent="."]
+margin_left = 348.0
+margin_top = 5.0
+margin_right = 376.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 28, 0 )
+text = "0"
+align = 1
+
+[node name="Minimize" type="Button" parent="."]
+margin_left = 380.0
+margin_right = 392.0
+margin_bottom = 24.0

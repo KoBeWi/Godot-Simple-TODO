@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/SimpleTODO/TODOColumn.gd" type="Script" id=1]
+[ext_resource path="res://addons/SimpleTODO/ColumnHeader.tscn" type="PackedScene" id=2]
 
 [sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 4.0
@@ -43,36 +44,7 @@ margin_right = 396.0
 margin_bottom = 74.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="Head" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 392.0
-margin_bottom = 24.0
-
-[node name="DragPanel" type="Panel" parent="VBoxContainer/Head"]
-margin_right = 20.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 20, 0 )
-mouse_default_cursor_shape = 13
-
-[node name="Name" type="LineEdit" parent="VBoxContainer/Head"]
-margin_left = 24.0
-margin_right = 344.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-text = "Column name"
-
-[node name="Counter" type="Label" parent="VBoxContainer/Head"]
-margin_left = 348.0
-margin_top = 5.0
-margin_right = 376.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 28, 0 )
-text = "0"
-align = 1
-
-[node name="Minimize" type="Button" parent="VBoxContainer/Head"]
-margin_left = 380.0
-margin_right = 392.0
-margin_bottom = 24.0
+[node name="Header" parent="VBoxContainer" instance=ExtResource( 2 )]
 
 [node name="TopSeparator" type="HSeparator" parent="VBoxContainer"]
 margin_top = 28.0
@@ -120,9 +92,6 @@ icon = SubResource( 5 )
 wait_time = 0.5
 one_shot = true
 
-[connection signal="gui_input" from="VBoxContainer/Head/DragPanel" to="." method="_on_DragPanel_gui_input"]
-[connection signal="text_changed" from="VBoxContainer/Head/Name" to="." method="name_changed"]
-[connection signal="pressed" from="VBoxContainer/Head/Minimize" to="." method="_on_Minimize_pressed"]
 [connection signal="child_entered_tree" from="VBoxContainer/ScrollContainer/Items" to="." method="_on_Items_child_entered_tree"]
 [connection signal="child_exiting_tree" from="VBoxContainer/ScrollContainer/Items" to="." method="_on_Items_child_exited_tree"]
 [connection signal="pressed" from="VBoxContainer/Actions/AddItem" to="." method="add_item" binds= [ true ]]
