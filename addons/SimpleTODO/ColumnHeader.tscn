@@ -1,32 +1,37 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=3 uid="uid://cwcwdmxxpf65e"]
+
+[ext_resource type="Script" path="res://addons/SimpleTODO/ColumnHeader.gd" id="1_kya6i"]
 
 [node name="Header" type="HBoxContainer"]
-margin_right = 392.0
-margin_bottom = 24.0
+script = ExtResource("1_kya6i")
 
 [node name="DragPanel" type="Panel" parent="."]
-margin_right = 20.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 20, 0 )
+custom_minimum_size = Vector2i(20, 0)
+layout_mode = 2
+offset_right = 20.0
+offset_bottom = 31.0
 mouse_default_cursor_shape = 13
 
 [node name="Name" type="LineEdit" parent="."]
-margin_left = 24.0
-margin_right = 344.0
-margin_bottom = 24.0
+layout_mode = 2
+offset_left = 24.0
+offset_right = 91.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 text = "Column name"
 
 [node name="Counter" type="Label" parent="."]
-margin_left = 348.0
-margin_top = 5.0
-margin_right = 376.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 28, 0 )
+layout_mode = 2
+offset_left = 95.0
+offset_top = 2.0
+offset_right = 105.0
+offset_bottom = 28.0
 text = "0"
-align = 1
+horizontal_alignment = 1
 
 [node name="Minimize" type="Button" parent="."]
-margin_left = 380.0
-margin_right = 392.0
-margin_bottom = 24.0
+layout_mode = 2
+offset_left = 109.0
+offset_right = 117.0
+offset_bottom = 31.0
+tooltip_text = "Fold/Unfold"

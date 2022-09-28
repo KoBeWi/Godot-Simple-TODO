@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorPlugin
 
 const DATA_FILE = "res://TODO.cfg"
@@ -6,28 +6,28 @@ const DATA_FILE = "res://TODO.cfg"
 var todo_screen: Control
 var is_loading: bool
 
-func get_plugin_name():
+func _get_plugin_name():
 	return "TODO"
 
-func get_plugin_icon():
-	return get_editor_interface().get_base_control().get_icon("Node", "EditorIcons")
+func _get_plugin_icon():
+	return get_editor_interface().get_base_control().get_theme_icon(&"CheckBox", &"EditorIcons")
 
-func has_main_screen() -> bool:
+func _has_main_screen() -> bool:
 	return true
 
 func _enter_tree():
-	todo_screen = preload("res://addons/SimpleTODO/TODO.tscn").instance()
+	todo_screen = preload("res://addons/SimpleTODO/TODO.tscn").instantiate()
+	todo_screen.plugin = self
 	todo_screen.hide()
-	add_to_group("__todo_plugin__")
 	
-	get_editor_interface().get_editor_viewport().add_child(todo_screen)
+	get_editor_interface().get_editor_main_screen().add_child(todo_screen)
 	load_data()
 	print("TODO loaded")
 
 func _ready() -> void:
 	set_process_input(false)
 
-func set_window_layout(configuration: ConfigFile):
+func _set_window_layout(configuration: ConfigFile):
 	if configuration.has_section("SimpleTODO"):
 		var minimized_tabs = configuration.get_value("SimpleTODO", "minimized_tabs")
 		
@@ -35,13 +35,16 @@ func set_window_layout(configuration: ConfigFile):
 			return
 		
 		for i in todo_screen.column_container.get_child_count():
-			var column = todo_screen.column_container.get_children()[i]
-			column.minimized = minimized_tabs[i]
+			var column: PanelContainer = todo_screen.column_container.get_child(i)
+			column.set_minimized.call_deferred(minimized_tabs[i])
 
-func get_window_layout(configuration: ConfigFile):
+func _get_window_layout(configuration: ConfigFile):
 	var new_minimized_tabs = []
-
+	
 	for column in todo_screen.column_container.get_children():
+		if not column is PanelContainer:
+			continue
+		
 		new_minimized_tabs.append(column.minimized)
 	
 	configuration.set_value("SimpleTODO", "minimized_tabs", new_minimized_tabs)
@@ -49,18 +52,18 @@ func get_window_layout(configuration: ConfigFile):
 func _exit_tree():
 	todo_screen.queue_free()
 
-func make_visible(visible: bool) -> void:
+func _make_visible(visible: bool) -> void:
 	todo_screen.visible = visible
 	set_process_input(visible)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
-			if event.control:
-				if event.scancode == KEY_Z:
+			if event.is_command_or_control_pressed():
+				if event.keycode == KEY_Z:
 					todo_screen.undo_redo.undo()
 					get_viewport().set_input_as_handled()
-				elif event.scancode == KEY_Y:
+				elif event.keycode == KEY_Y:
 					todo_screen.undo_redo.redo()
 					get_viewport().set_input_as_handled()
 
@@ -68,10 +71,9 @@ func save_data():
 	if is_loading:
 		return
 	
-	var data = ConfigFile.new()
-	
+	var data := ConfigFile.new()
 	for column in todo_screen.column_container.get_children():
-		var section = column.name_edit.text
+		var section = column.header.name_edit.text
 		
 		if column.item_container.get_child_count() > 0:
 			for item in column.item_container.get_children():
@@ -82,7 +84,7 @@ func save_data():
 	data.save(DATA_FILE)
 
 func load_data():
-	var data = ConfigFile.new()
+	var data := ConfigFile.new()
 	data.load(DATA_FILE)
 	
 	is_loading = true
@@ -90,7 +92,7 @@ func load_data():
 	for section in data.get_sections():
 		var column = todo_screen.add_column()
 		column.set_name(section)
-
+		
 		for item in data.get_section_keys(section):
 			if item == "__none__":
 				continue
@@ -99,5 +101,4 @@ func load_data():
 			column_item.text_field.text = data.get_value(section, item)
 	
 	todo_screen.undo_redo.clear_history()
-	
 	is_loading = false
