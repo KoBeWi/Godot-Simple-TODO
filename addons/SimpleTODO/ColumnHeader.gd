@@ -1,5 +1,5 @@
-extends HBoxContainer
 @tool
+extends HBoxContainer
 
 @onready var drag_panel: Panel = $DragPanel
 @onready var name_edit: LineEdit = $Name
