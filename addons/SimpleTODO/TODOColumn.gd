@@ -61,6 +61,7 @@ func _ready() -> void:
 	update_mirror(0)
 	
 	main.connect_scrollbar(update_mirror)
+	item_container.child_entered_tree.connect(validate_unique_id)
 	item_container.child_entered_tree.connect(update_counter.unbind(1), CONNECT_DEFERRED)
 	item_container.child_exiting_tree.connect(update_counter.unbind(1), CONNECT_DEFERRED)
 
@@ -197,3 +198,19 @@ func get_column_from_mouse_position() -> PanelContainer:
 		if child.get_rect().has_point(Vector2(mouse_position.x, 0)):
 			return child
 	return null
+
+func validate_unique_id(for_item: Control):
+	var is_unique := true
+	for item in item_container.get_children():
+		if item != for_item and item.id == for_item.id:
+			is_unique = false
+	
+	if not is_unique:
+		var id_list := item_container.get_children().map(func(item: Control): return item.id)
+		
+		for i in 1000000:
+			if not i in id_list:
+				for_item.id = i
+				return
+		
+		push_error("Simple TODO: Unique ID could not be ensured. Farewell.")

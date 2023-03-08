@@ -18,6 +18,8 @@ var current_drag_item_index := 0
 var is_dragging := false
 var item_margin := 20
 
+var id: int
+
 func _ready() -> void:
 	undo_redo = main.undo_redo
 	item_placement_holder = main.item_placement_holder

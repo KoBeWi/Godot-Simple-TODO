@@ -77,7 +77,7 @@ func save_data():
 		
 		if column.item_container.get_child_count() > 0:
 			for item in column.item_container.get_children():
-				data.set_value(section, str("item", item.get_index()), item.text_field.text)
+				data.set_value(section, str("item", item.id), item.text_field.text)
 		else:
 			data.set_value(section, "__none__", "null")
 	
@@ -99,6 +99,7 @@ func load_data():
 			
 			var column_item = column.add_item()
 			column_item.text_field.text = data.get_value(section, item)
+			column_item.id = item.to_int()
 	
 	todo_screen.undo_redo.clear_history()
 	is_loading = false
