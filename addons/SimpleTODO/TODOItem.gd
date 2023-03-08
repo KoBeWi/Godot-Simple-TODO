@@ -172,5 +172,6 @@ func delete_item():
 	undo_redo.add_do_method(parent_column.item_container.remove_child.bind(self))
 	undo_redo.add_do_method(parent_column.request_save)
 	undo_redo.add_undo_method(parent_column.item_container.add_child.bind(self))
+	undo_redo.add_undo_method(parent_column.item_container.move_child.bind(self, get_index()))
 	undo_redo.add_undo_method(parent_column.request_save)
 	undo_redo.commit_action()
