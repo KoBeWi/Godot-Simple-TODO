@@ -26,16 +26,18 @@ signal delete
 
 func set_minimized(val: bool):
 	minimized = val
-
-	header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
-	mirror_header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
+	
+	if plugin:
+		header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
+		mirror_header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
 	
 	for node in foldable:
 		node.visible = not minimized
 
 func _ready() -> void:
 	item_placement_holder = main.item_placement_holder
-	delete_button.icon = get_theme_icon(&"Remove", &"EditorIcons")
+	if plugin:
+		delete_button.icon = get_theme_icon(&"Remove", &"EditorIcons")
 	
 	mirror_header_panel = PanelContainer.new()
 	main.column_mirror.add_child(mirror_header_panel)

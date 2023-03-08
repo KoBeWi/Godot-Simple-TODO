@@ -24,7 +24,8 @@ func _ready() -> void:
 	undo_redo = main.undo_redo
 	item_placement_holder = main.item_placement_holder
 	next_parent_column = parent_column
-	button.icon = get_theme_icon(&"Remove", &"EditorIcons")
+	if plugin:
+		button.icon = get_theme_icon(&"Remove", &"EditorIcons")
 	
 	set_process(false)
 	set_process_input(false)

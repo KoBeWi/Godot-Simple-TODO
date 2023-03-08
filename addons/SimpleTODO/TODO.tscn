@@ -26,45 +26,29 @@ size_flags_vertical = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
-offset_right = 1152.0
-offset_bottom = 31.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
-offset_right = 1152.0
-offset_bottom = 31.0
 
 [node name="Button" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-offset_left = 525.0
-offset_right = 626.0
-offset_bottom = 31.0
 size_flags_horizontal = 4
 text = "Add column"
 
 [node name="ColumnMirror" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2i(0, 30)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-anchors_preset = 0
-offset_top = 35.0
-offset_right = 1152.0
-offset_bottom = 35.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 35.0
-offset_right = 1152.0
-offset_bottom = 648.0
 size_flags_vertical = 3
 
 [node name="Columns" type="HBoxContainer" parent="VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_right = 1152.0
-offset_bottom = 613.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
