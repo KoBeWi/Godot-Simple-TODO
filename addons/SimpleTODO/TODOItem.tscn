@@ -1,14 +1,15 @@
 [gd_scene load_steps=2 format=3 uid="uid://bdesiystlxdb2"]
 
-[ext_resource type="Script" path="res://addons/SimpleTODO/TODOItem.gd" id="1"]
+[ext_resource type="Script" path="res://addons/SimpleTODO/TODOItem.gd" id="1_ecqce"]
 
 [node name="TODOItem" type="HBoxContainer"]
 mouse_filter = 2
-script = ExtResource("1")
+script = ExtResource("1_ecqce")
 
 [node name="DragPanel" type="Panel" parent="."]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+tooltip_text = "Right-click to mark/unmark"
 mouse_default_cursor_shape = 13
 
 [node name="Text" type="TextEdit" parent="."]

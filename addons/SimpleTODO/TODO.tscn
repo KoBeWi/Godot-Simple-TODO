@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://yf8y5e74vv4o"]
 
-[ext_resource type="Script" path="res://addons/SimpleTODO/TODO.gd" id="1"]
+[ext_resource type="Script" path="res://addons/SimpleTODO/TODO.gd" id="1_wo5wb"]
 
 [node name="TODO" type="Control"]
 clip_contents = true
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1")
+script = ExtResource("1_wo5wb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -30,10 +30,39 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Total" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Total: %d"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Add column"
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer3"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = "Search Items"
+clear_button_enabled = true
 
 [node name="ColumnMirror" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -52,4 +81,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/Button" to="." method="add_column" binds= [true]]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer2/Button" to="." method="add_column" binds= [true]]
+[connection signal="text_changed" from="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer3/LineEdit" to="." method="filter_elements"]

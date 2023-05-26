@@ -23,6 +23,7 @@ var current_drag_item_index := 0
 var item_margin := 20
 
 signal delete
+signal counter_updated
 
 func set_minimized(val: bool):
 	minimized = val
@@ -67,7 +68,7 @@ func _ready() -> void:
 	item_container.child_entered_tree.connect(update_counter.unbind(1), CONNECT_DEFERRED)
 	item_container.child_exiting_tree.connect(update_counter.unbind(1), CONNECT_DEFERRED)
 
-func set_name(column_name):
+func set_title(column_name):
 	header.name_edit.text = column_name
 	mirror_header.name_edit.text = column_name
 
@@ -98,12 +99,16 @@ func _process(delta):
 		
 		position = mouse_position
 
-func add_item(from_button := false) -> Control:
+func create_item() -> Control:
 	var item = preload("res://addons/SimpleTODO/TODOItem.tscn").instantiate()
 	item.parent_column = self
 	item.plugin = plugin
 	item.main = main
+	return item
 
+func add_item(from_button := false) -> Control:
+	var item := create_item()
+	
 	undo_redo.create_action("Add Item")
 	undo_redo.add_do_method(item_container.add_child.bind(item))
 	undo_redo.add_do_reference(item)
@@ -124,6 +129,7 @@ func delete_column() -> void:
 func update_counter() -> void:
 	header.counter.text = str(item_container.get_child_count())
 	mirror_header.counter.text = str(item_container.get_child_count())
+	counter_updated.emit()
 
 func request_save() -> void:
 	plugin.save_data()

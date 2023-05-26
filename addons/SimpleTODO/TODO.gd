@@ -9,11 +9,13 @@ var plugin: EditorPlugin
 
 var undo_redo: UndoRedo
 var item_placement_holder: Panel
+var counter_queued: bool
 
 func _ready() -> void:
 	undo_redo = UndoRedo.new()
 	item_placement_holder = create_drag_placement_holder()
 	scroll_container.get_v_scroll_bar().value_changed.connect(update_mirror)
+	update_full_counter()
 
 func update_mirror(v: float):
 	column_mirror.visible = v > column_mirror.get_child(0).size.y
@@ -29,13 +31,18 @@ func create_drag_placement_holder() -> Panel:
 	
 	return new_holder
 
-func add_column(from_button := false) -> Control:
+func create_column() -> Control:
 	var column = preload("res://addons/SimpleTODO/TODOColumn.tscn").instantiate()
 	column.main = self
 	column.plugin = plugin
 	column.undo_redo = undo_redo
 	
 	column.delete.connect(delete_column.bind(column))
+	column.counter_updated.connect(update_full_counter)
+	return column
+
+func add_column(from_button := false) -> Control:
+	var column := create_column()
 	
 	undo_redo.create_action("Add Column")
 	undo_redo.add_do_method(column_container.add_child.bind(column))
@@ -67,3 +74,19 @@ func request_save() -> void:
 func refresh_mirrors():
 	for column in column_container.get_children():
 		column.update_mirror.call_deferred(0)
+
+func filter_elements(new_text: String) -> void:
+	for column in column_container.get_children():
+		for item in column.item_container.get_children():
+			item.filter(new_text)
+
+func update_full_counter():
+	if counter_queued:
+		return
+	counter_queued = true
+	
+	_update_full_counter.call_deferred()
+
+func _update_full_counter():
+	%Total.text = str("Total: %d" % column_container.get_children().reduce(func(accum: int, column: Node) -> int: return accum + column.item_container.get_child_count(), 0))
+	counter_queued = false

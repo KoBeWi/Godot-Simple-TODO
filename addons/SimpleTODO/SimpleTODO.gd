@@ -2,9 +2,9 @@
 extends EditorPlugin
 
 const DATA_FILE = "res://TODO.cfg"
+var pending_columns: Array[Control]
 
 var todo_screen: Control
-var is_loading: bool
 
 func _get_plugin_name():
 	return "TODO"
@@ -22,10 +22,18 @@ func _enter_tree():
 	
 	get_editor_interface().get_editor_main_screen().add_child(todo_screen)
 	load_data()
-	print("TODO loaded")
 
 func _ready() -> void:
 	set_process_input(false)
+
+func _process(delta: float) -> void:
+	if pending_columns.is_empty():
+		set_process(false)
+		print("TODO loaded")
+		return
+	
+	var column = pending_columns.pop_front()
+	todo_screen.column_container.add_child(column)
 
 func _set_window_layout(configuration: ConfigFile):
 	if configuration.has_section("SimpleTODO"):
@@ -68,9 +76,6 @@ func _input(event: InputEvent) -> void:
 					get_viewport().set_input_as_handled()
 
 func save_data():
-	if is_loading:
-		return
-	
 	var data := ConfigFile.new()
 	for column in todo_screen.column_container.get_children():
 		var section = column.header.name_edit.text
@@ -87,19 +92,15 @@ func load_data():
 	var data := ConfigFile.new()
 	data.load(DATA_FILE)
 	
-	is_loading = true
-	
 	for section in data.get_sections():
-		var column = todo_screen.add_column()
-		column.set_name(section)
+		var column = todo_screen.create_column()
+		column.ready.connect(column.set_title.bind(section))
+		pending_columns.append(column)
 		
 		for item in data.get_section_keys(section):
 			if item == "__none__":
 				continue
 			
-			var column_item = column.add_item()
-			column_item.text_field.text = data.get_value(section, item)
-			column_item.id = item.to_int()
-	
-	todo_screen.undo_redo.clear_history()
-	is_loading = false
+			var column_item = column.create_item()
+			column_item.ready.connect(column_item.initialize.bind(data.get_value(section, item), item.to_int()), CONNECT_DEFERRED)
+			column.ready.connect(column_item.add_to_column.bind(column))

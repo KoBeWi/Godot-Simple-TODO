@@ -1,7 +1,7 @@
 @tool
 extends HBoxContainer
 
-@onready var text_field = $Text
+@onready var text_field: TextEdit = $Text
 @onready var button: Button = $Button
 
 var main: Control
@@ -19,6 +19,7 @@ var is_dragging := false
 var item_margin := 20
 
 var id: int
+var is_marked: bool
 
 func _ready() -> void:
 	undo_redo = main.undo_redo
@@ -99,7 +100,7 @@ func get_column_item_from_mouse_position() -> Dictionary:
 # Handles left click being pressed on the drag panel.
 func drag_panel_input(event: InputEvent):
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed and !is_dragging:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not is_dragging:
 			initial_item_index = get_index()
 			get_parent().remove_child(self)
 			main.add_child(self)
@@ -119,6 +120,13 @@ func drag_panel_input(event: InputEvent):
 			item_placement_holder.visible = true
 			item_placement_holder.custom_minimum_size = custom_minimum_size
 			item_placement_holder.size = size
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			if is_marked:
+				$DragPanel.modulate = Color.WHITE
+				is_marked = false
+			else:
+				$DragPanel.modulate = Color.RED
+				is_marked = true
 
 # Handles left click being released.
 func _input(event: InputEvent):
@@ -175,3 +183,16 @@ func delete_item():
 	undo_redo.add_undo_method(parent_column.item_container.move_child.bind(self, get_index()))
 	undo_redo.add_undo_method(parent_column.request_save)
 	undo_redo.commit_action()
+
+func filter(text: String):
+	if text.is_empty() or text_field.text.contains(text):
+		show()
+	else:
+		hide()
+
+func initialize(text: String, p_id: int):
+	text_field.text = text
+	id = p_id
+
+func add_to_column(column: Control):
+	column.item_container.add_child(self)

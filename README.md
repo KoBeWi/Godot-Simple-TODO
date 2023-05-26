@@ -4,15 +4,23 @@ This simple plugin that lets you take random notes and organize them in named co
 
 Just enable it to get a new editor screen called "TODO" where you can create columns, where you can create random labels where you can put any text. Simple as that.
 
-![](https://github.com/KoBeWi/Godot-Simple-TODO/blob/master/Media/ReadmeShowcase.gif)
+![](Media/ReadmeShowcase.gif)
 
 The plugin has full undo support.
 
-![](https://github.com/KoBeWi/Godot-Simple-TODO/blob/master/Media/ReadmeUndo.gif)
+![](Media/ReadmeUndo.gif)
 
 And drag and drop support (contributed by [@Nukiloco](https://github.com/Nukiloco)).
 
-![](https://github.com/KoBeWi/Godot-Simple-TODO/blob/master/Media/ReadmeDragAndDrop.gif)
+![](Media/ReadmeDragAndDrop.gif)
+
+You can filter items.
+
+![](Media/ReadmeFilter.gif)
+
+There is also a simple "marker" function. You can right-click the item's drag field to leave a temporary visual marker. The marker is not saved, it's only meant to easier keep track of the item you are currently working on.
+
+![](Media/ReadmeMarker.gif)
 
 ## Data
 
