@@ -1,8 +1,11 @@
 @tool
 extends EditorPlugin
 
-const DATA_FILE = "res://TODO.cfg"
-const IMAGE_DATA_FILE = "res://TODO.bin"
+const TEXT_DATA_SETTING = "addons/simple_todo/text_data_file"
+const IMAGE_DATA_SETTING = "addons/simple_todo/image_data_file"
+
+var text_data_file := "res://TODO.cfg"
+var image_data_file := "res://TODO.bin"
 
 var pending_columns: Array[Control]
 
@@ -18,7 +21,20 @@ func _get_plugin_icon():
 func _has_main_screen() -> bool:
 	return true
 
+func setup_setting(setting: String, initial_value: String):
+	if not ProjectSettings.has_setting(setting):
+		ProjectSettings.set_setting(setting, initial_value)
+	
+	ProjectSettings.add_property_info({ "name": setting, "type": TYPE_STRING, "hint": PROPERTY_HINT_SAVE_FILE })
+	ProjectSettings.set_initial_value(setting, initial_value)
+
 func _enter_tree():
+	setup_setting(TEXT_DATA_SETTING, text_data_file)
+	text_data_file = ProjectSettings.get_setting(TEXT_DATA_SETTING)
+	setup_setting(IMAGE_DATA_SETTING, image_data_file)
+	image_data_file = ProjectSettings.get_setting(IMAGE_DATA_SETTING)
+	ProjectSettings.settings_changed.connect(on_settings_changed)
+	
 	todo_screen = preload("res://addons/SimpleTODO/TODO.tscn").instantiate()
 	todo_screen.plugin = self
 	todo_screen.hide()
@@ -28,6 +44,19 @@ func _enter_tree():
 
 func _ready() -> void:
 	set_process_input(false)
+
+func on_settings_changed():
+	var new_text_data_file: String = ProjectSettings.get_setting(TEXT_DATA_SETTING).trim_prefix("res://")
+	if new_text_data_file.is_valid_filename() and new_text_data_file != text_data_file:
+		var da := DirAccess.open("res://")
+		da.rename(text_data_file, new_text_data_file)
+		text_data_file = new_text_data_file
+	
+	var new_image_data_file: String = ProjectSettings.get_setting(IMAGE_DATA_SETTING).trim_prefix("res://")
+	if new_image_data_file.is_valid_filename() and new_image_data_file != image_data_file:
+		var da := DirAccess.open("res://")
+		da.rename(image_data_file, new_image_data_file)
+		image_data_file = new_image_data_file
 
 func _process(delta: float) -> void:
 	if pending_columns.is_empty():
@@ -115,7 +144,7 @@ func save_data():
 		else:
 			data.set_value(section, "__none__", "null")
 	
-	data.save(DATA_FILE)
+	data.save(text_data_file)
 	
 	if image_database_updated:
 		var data_to_save: Dictionary#[String, PackedByteArray]
@@ -123,15 +152,15 @@ func save_data():
 		for imag in image_database:
 			data_to_save[image_database[imag]] = imag.save_png_to_buffer()
 		
-		var image_file := FileAccess.open(IMAGE_DATA_FILE, FileAccess.WRITE)
+		var image_file := FileAccess.open(image_data_file, FileAccess.WRITE)
 		image_file.store_var(data_to_save)
 
 func load_data():
 	var data := ConfigFile.new()
-	data.load(DATA_FILE)
+	data.load(text_data_file)
 	
 	var image_data: Dictionary#[String, PackedByteArray]
-	var image_dataf := FileAccess.open(IMAGE_DATA_FILE, FileAccess.READ)
+	var image_dataf := FileAccess.open(image_data_file, FileAccess.READ)
 	if image_dataf:
 		image_data = image_dataf.get_var()
 	

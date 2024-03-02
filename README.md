@@ -36,9 +36,11 @@ Note that images are stored as a binary PNG data in their own file, which makes 
 
 ## Data
 
-Data of your columns is stored in a simple .cfg file. You can edit it by hand (the item names don't matter btw), but do so only when the plugin is not active. The plugin automatically saves all your changes. You can change the file where data is stored by modifying `DATA_FILE` constant in `SimpleTODO.gd`.
+Data of your columns is stored in a simple .cfg file. You can edit it by hand (the item names don't matter btw), but do so only when the plugin is not active. The plugin automatically saves all your changes.
 
-Images are stored separately in a .bin file (which is a serialized Dictionary), referenced as `IMAGE_DATA_FILE` constant. If an item has an image, it will be referenced by randomly generated unique ID. The plugin is able to automatically cleanup unused images, but it's better to not modify them manually, to avoid losing data.
+Images are stored separately in a .bin file (which is a serialized Dictionary). If an item has an image, it will be referenced by randomly generated unique ID. The plugin is able to automatically cleanup unused images, but it's better to not modify them manually, to avoid losing data.
+
+The text data is stored in file defined by `addons/simple_todo/text_data_file` project setting (`res://TODO.cfg` by default), while images are stored in `addons/simple_todo/image_data_file` (`res://TODO.bin` by default). Changing either project setting will automatically move the file.
 
 ___
 You can find all my addons on my [profile page](https://github.com/KoBeWi).
