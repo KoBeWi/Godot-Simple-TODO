@@ -43,6 +43,7 @@ func _ready() -> void:
 	mirror_header_panel = PanelContainer.new()
 	main.column_mirror.add_child(mirror_header_panel)
 	mirror_header_panel.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel"))
+	header.name_edit.text_changed.connect(name_changed)
 	
 	mirror_header = preload("res://addons/SimpleTODO/ColumnHeader.tscn").instantiate()
 	mirror_header_panel.add_child(mirror_header)
