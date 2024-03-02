@@ -46,17 +46,17 @@ func _ready() -> void:
 	set_process_input(false)
 
 func on_settings_changed():
-	var new_text_data_file: String = ProjectSettings.get_setting(TEXT_DATA_SETTING).trim_prefix("res://")
-	if new_text_data_file.is_valid_filename() and new_text_data_file != text_data_file:
+	var new_text_data_file: String = ProjectSettings.get_setting(TEXT_DATA_SETTING)
+	if new_text_data_file != text_data_file:
 		var da := DirAccess.open("res://")
-		da.rename(text_data_file, new_text_data_file)
-		text_data_file = new_text_data_file
+		if da.rename(text_data_file, new_text_data_file) == OK:
+			text_data_file = new_text_data_file
 	
-	var new_image_data_file: String = ProjectSettings.get_setting(IMAGE_DATA_SETTING).trim_prefix("res://")
-	if new_image_data_file.is_valid_filename() and new_image_data_file != image_data_file:
+	var new_image_data_file: String = ProjectSettings.get_setting(IMAGE_DATA_SETTING)
+	if new_image_data_file != image_data_file:
 		var da := DirAccess.open("res://")
-		da.rename(image_data_file, new_image_data_file)
-		image_data_file = new_image_data_file
+		if da.rename(image_data_file, new_image_data_file) == OK:
+			image_data_file = new_image_data_file
 
 func _process(delta: float) -> void:
 	if pending_columns.is_empty():
@@ -162,7 +162,9 @@ func load_data():
 	var image_data: Dictionary#[String, PackedByteArray]
 	var image_dataf := FileAccess.open(image_data_file, FileAccess.READ)
 	if image_dataf:
-		image_data = image_dataf.get_var()
+		var loaded = image_dataf.get_var()
+		if loaded is Dictionary:
+			image_data = loaded
 	
 	for section in data.get_sections():
 		var column = todo_screen.create_column()
