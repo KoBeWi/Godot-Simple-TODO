@@ -286,8 +286,12 @@ func image_input(event: InputEvent) -> void:
 
 func text_input(event: InputEvent) -> void:
 	if event is InputEventKey:
-		if event.pressed and event.keycode == KEY_ENTER and event.ctrl_pressed:
-			var item = parent_column.add_item()
-			item.text_field.grab_focus()
-			item.text_field.select_all()
-			accept_event()
+		if event.pressed:
+			if event.keycode == KEY_ENTER and event.ctrl_pressed:
+				var item = parent_column.add_item()
+				item.text_field.grab_focus()
+				item.text_field.select_all()
+				accept_event()
+			elif event.keycode == KEY_ESCAPE:
+				text_field.release_focus()
+				accept_event()

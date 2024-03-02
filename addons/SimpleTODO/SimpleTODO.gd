@@ -68,6 +68,9 @@ func _make_visible(visible: bool) -> void:
 	set_process_input(visible)
 
 func _input(event: InputEvent) -> void:
+	if get_viewport().gui_get_focus_owner() is TextEdit:
+		return
+	
 	if event is InputEventKey:
 		if event.pressed:
 			if event.is_command_or_control_pressed():
