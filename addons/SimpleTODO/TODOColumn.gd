@@ -208,6 +208,9 @@ func get_column_from_mouse_position() -> PanelContainer:
 	return null
 
 func validate_unique_id(for_item: Control):
+	if for_item.get_script() == null:
+		return
+	
 	var is_unique := true
 	for item in item_container.get_children():
 		if item != for_item and item.id == for_item.id:

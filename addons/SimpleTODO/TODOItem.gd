@@ -158,6 +158,8 @@ func remove_self_safe():
 		parent.remove_child(self)
 
 func move_item(index):
+	index = mini(index, next_parent_column.item_container.get_child_count())
+	
 	undo_redo.create_action("Move Item")
 	
 	undo_redo.add_do_method(remove_self_safe)
@@ -172,7 +174,7 @@ func move_item(index):
 	undo_redo.add_undo_method(parent_column.item_container.move_child.bind(self, initial_item_index))
 	undo_redo.add_undo_method(parent_column.request_save)
 	undo_redo.add_undo_property(self, &"parent_column", parent_column)
-
+	
 	undo_redo.commit_action()
 
 func delete_item():
