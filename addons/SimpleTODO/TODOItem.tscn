@@ -48,6 +48,7 @@ wait_time = 0.5
 one_shot = true
 
 [connection signal="gui_input" from="DragPanel" to="." method="drag_panel_input"]
+[connection signal="gui_input" from="VBoxContainer/Text" to="." method="text_input"]
 [connection signal="text_changed" from="VBoxContainer/Text" to="Timer" method="start"]
 [connection signal="gui_input" from="VBoxContainer/Image" to="." method="image_input"]
 [connection signal="pressed" from="Button" to="." method="delete_pressed"]

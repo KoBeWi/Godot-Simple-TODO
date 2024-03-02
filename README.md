@@ -6,6 +6,8 @@ Just enable it to get a new editor screen called "TODO" where you can create col
 
 ![](Media/ReadmeShowcase.gif)
 
+The items can be added either using the `+` button or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.
+
 The plugin has full undo support, up to 20 actions.
 
 ![](Media/ReadmeUndo.gif)

@@ -283,3 +283,10 @@ func image_input(event: InputEvent) -> void:
 				image_popup.add_child(big_image)
 			
 			image_popup.popup_centered()
+
+func text_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_ENTER and event.ctrl_pressed:
+			var item = parent_column.add_item()
+			item.text_field.grab_focus()
+			accept_event()
