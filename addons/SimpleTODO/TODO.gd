@@ -76,6 +76,7 @@ func refresh_mirrors():
 		column.update_mirror.call_deferred(0)
 
 func filter_elements(new_text: String) -> void:
+	new_text = new_text.to_lower()
 	for column in column_container.get_children():
 		for item in column.item_container.get_children():
 			item.filter(new_text)

@@ -187,7 +187,7 @@ func delete_item():
 	undo_redo.commit_action()
 
 func filter(text: String):
-	if text.is_empty() or text_field.text.contains(text):
+	if text.is_empty() or text_field.text.to_lower().contains(text):
 		show()
 	else:
 		hide()
