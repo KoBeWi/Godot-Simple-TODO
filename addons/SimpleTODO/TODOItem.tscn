@@ -3,22 +3,41 @@
 [ext_resource type="Script" path="res://addons/SimpleTODO/TODOItem.gd" id="1_ecqce"]
 
 [node name="TODOItem" type="HBoxContainer"]
+offset_right = 315.0
+offset_bottom = 35.0
 mouse_filter = 2
 script = ExtResource("1_ecqce")
 
 [node name="DragPanel" type="Panel" parent="."]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
-tooltip_text = "Right-click to mark/unmark"
+tooltip_text = "Right-click to open menu.
+Middle-click to mark/unmark."
 mouse_default_cursor_shape = 13
 
-[node name="Text" type="TextEdit" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Text" type="TextEdit" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "TODO"
 wrap_mode = 1
 scroll_fit_content_height = true
+
+[node name="Image" type="TextureRect" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
@@ -29,6 +48,7 @@ wait_time = 0.5
 one_shot = true
 
 [connection signal="gui_input" from="DragPanel" to="." method="drag_panel_input"]
-[connection signal="text_changed" from="Text" to="Timer" method="start"]
+[connection signal="text_changed" from="VBoxContainer/Text" to="Timer" method="start"]
+[connection signal="gui_input" from="VBoxContainer/Image" to="." method="image_input"]
 [connection signal="pressed" from="Button" to="." method="delete_pressed"]
 [connection signal="timeout" from="Timer" to="." method="request_save"]

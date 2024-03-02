@@ -2,9 +2,12 @@
 extends EditorPlugin
 
 const DATA_FILE = "res://TODO.cfg"
+const IMAGE_DATA_FILE = "res://TODO.bin"
+
 var pending_columns: Array[Control]
 
 var todo_screen: Control
+var image_database: Dictionary#[Image, String]
 
 func _get_plugin_name():
 	return "TODO"
@@ -76,21 +79,58 @@ func _input(event: InputEvent) -> void:
 					get_viewport().set_input_as_handled()
 
 func save_data():
+	var image_database_updated: bool
+	var used_images: Dictionary#[Image, bool]
+	
 	var data := ConfigFile.new()
 	for column in todo_screen.column_container.get_children():
 		var section = column.header.name_edit.text
 		
 		if column.item_container.get_child_count() > 0:
+			
 			for item in column.item_container.get_children():
-				data.set_value(section, str("item", item.id), item.text_field.text)
+				var item_id := str("item", item.id)
+				data.set_value(section, item_id, item.text_field.text)
+				
+				var image: Image = item.image_data
+				if image:
+					if not image in image_database:
+						var id: PackedStringArray
+						for i in 8:
+							id.append(char(randi_range(33, 125)))
+						image_database[image] = "".join(id)
+						image_database_updated = true
+					
+					used_images[image] = true
+					item_id += ".image"
+					data.set_value(section, item_id, image_database[image])
+				
+				for imag in image_database.keys():
+					if not imag in used_images:
+						image_database.erase(imag)
+						image_database_updated = true
 		else:
 			data.set_value(section, "__none__", "null")
 	
 	data.save(DATA_FILE)
+	
+	if image_database_updated:
+		var data_to_save: Dictionary#[String, PackedByteArray]
+		
+		for imag in image_database:
+			data_to_save[image_database[imag]] = imag.save_png_to_buffer()
+		
+		var image_file := FileAccess.open(IMAGE_DATA_FILE, FileAccess.WRITE)
+		image_file.store_var(data_to_save)
 
 func load_data():
 	var data := ConfigFile.new()
 	data.load(DATA_FILE)
+	
+	var image_data: Dictionary#[String, PackedByteArray]
+	var image_dataf := FileAccess.open(IMAGE_DATA_FILE, FileAccess.READ)
+	if image_dataf:
+		image_data = image_dataf.get_var()
 	
 	for section in data.get_sections():
 		var column = todo_screen.create_column()
@@ -98,9 +138,19 @@ func load_data():
 		pending_columns.append(column)
 		
 		for item in data.get_section_keys(section):
-			if item == "__none__":
+			if item == "__none__" or item.ends_with(".image"):
 				continue
 			
+			var image_id = data.get_value(section, item + ".image", "")
+			var image_bytes = image_data.get(image_id)
+			var image: Image
+			
+			if image_bytes is PackedByteArray:
+				image = Image.new()
+				image.load_png_from_buffer(image_bytes)
+				image_database[image] = image_id
+			
 			var column_item = column.create_item()
+			column_item.image_data = image
 			column_item.ready.connect(column_item.initialize.bind(data.get_value(section, item), item.to_int()), CONNECT_DEFERRED)
 			column.ready.connect(column_item.add_to_column.bind(column))

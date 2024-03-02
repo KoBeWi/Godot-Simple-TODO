@@ -1,8 +1,12 @@
 @tool
 extends HBoxContainer
 
-@onready var text_field: TextEdit = $Text
+enum { PASTE_IMAGE, DELETE_IMAGE }
+
+@onready var text_field: TextEdit = %Text
+@onready var image_field: TextureRect = %Image
 @onready var button: Button = $Button
+@onready var drag_panel: Panel = $DragPanel
 
 var main: Control
 var plugin: EditorPlugin
@@ -20,6 +24,9 @@ var item_margin := 20
 
 var id: int
 var is_marked: bool
+var context_menu: PopupMenu
+var image_data: Image
+var image_popup: PopupPanel
 
 func _ready() -> void:
 	undo_redo = main.undo_redo
@@ -99,8 +106,8 @@ func get_column_item_from_mouse_position() -> Dictionary:
 
 # Handles left click being pressed on the drag panel.
 func drag_panel_input(event: InputEvent):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not is_dragging:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and not is_dragging:
 			initial_item_index = get_index()
 			get_parent().remove_child(self)
 			main.add_child(self)
@@ -120,13 +127,27 @@ func drag_panel_input(event: InputEvent):
 			item_placement_holder.visible = true
 			item_placement_holder.custom_minimum_size = custom_minimum_size
 			item_placement_holder.size = size
-		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		elif event.button_index == MOUSE_BUTTON_MIDDLE:
 			if is_marked:
 				$DragPanel.modulate = Color.WHITE
 				is_marked = false
 			else:
 				$DragPanel.modulate = Color.RED
 				is_marked = true
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			if not context_menu:
+				context_menu = PopupMenu.new()
+				context_menu.add_item("Paste Image")
+				context_menu.add_item("Delete Image")
+				add_child(context_menu)
+				context_menu.id_pressed.connect(menu_action)
+			
+			context_menu.set_item_disabled(PASTE_IMAGE, not DisplayServer.clipboard_has_image())
+			context_menu.set_item_disabled(DELETE_IMAGE, not image_field.visible)
+			
+			context_menu.reset_size()
+			context_menu.position = Vector2(drag_panel.get_screen_position().x, DisplayServer.mouse_get_position().y)
+			context_menu.popup()
 
 # Handles left click being released.
 func _input(event: InputEvent):
@@ -195,6 +216,70 @@ func filter(text: String):
 func initialize(text: String, p_id: int):
 	text_field.text = text
 	id = p_id
+	
+	if image_data:
+		create_texture()
 
 func add_to_column(column: Control):
 	column.item_container.add_child(self)
+
+func menu_action(id: int):
+	match id:
+		PASTE_IMAGE:
+			var image := DisplayServer.clipboard_get_image()
+			assert(image)
+			
+			undo_redo.create_action("Paste image")
+			undo_redo.add_do_property(self, &"image_data", image)
+			undo_redo.add_do_method(create_texture)
+			undo_redo.add_do_method(delete_image_popup)
+			undo_redo.add_do_method(request_save)
+			undo_redo.add_undo_property(self, &"image_data", image_data)
+			undo_redo.add_undo_method(create_texture)
+			undo_redo.add_undo_method(delete_image_popup)
+			undo_redo.add_undo_method(request_save)
+			undo_redo.commit_action()
+		DELETE_IMAGE:
+			undo_redo.create_action("Delete image")
+			undo_redo.add_do_property(self, &"image_data", null)
+			undo_redo.add_do_method(create_texture)
+			undo_redo.add_do_method(delete_image_popup)
+			undo_redo.add_do_method(request_save)
+			undo_redo.add_undo_property(self, &"image_data", image_data)
+			undo_redo.add_undo_method(create_texture)
+			undo_redo.add_undo_method(delete_image_popup)
+			undo_redo.add_undo_method(request_save)
+			undo_redo.commit_action()
+
+func create_texture():
+	if image_data:
+		image_field.texture = ImageTexture.create_from_image(image_data)
+		image_field.show()
+	else:
+		image_field.texture = null
+		image_field.hide()
+
+func delete_image_popup():
+	if image_popup:
+		image_popup.queue_free()
+		image_popup = null
+
+func image_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			if not image_popup:
+				image_popup = PopupPanel.new()
+				image_popup.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Tree"))
+				add_child(image_popup)
+				
+				var pattern := TextureRect.new()
+				pattern.texture = get_theme_icon(&"Checkerboard", &"EditorIcons")
+				pattern.stretch_mode = TextureRect.STRETCH_TILE
+				image_popup.add_child(pattern)
+				
+				var big_image := TextureRect.new()
+				big_image.texture = image_field.texture
+				
+				image_popup.add_child(big_image)
+			
+			image_popup.popup_centered()
