@@ -49,14 +49,14 @@ func on_settings_changed():
 	var new_text_data_file: String = ProjectSettings.get_setting(TEXT_DATA_SETTING)
 	if new_text_data_file != text_data_file:
 		var da := DirAccess.open("res://")
-		if da.rename(text_data_file, new_text_data_file) == OK:
-			text_data_file = new_text_data_file
+		da.rename(text_data_file, new_text_data_file)
+		text_data_file = new_text_data_file
 	
 	var new_image_data_file: String = ProjectSettings.get_setting(IMAGE_DATA_SETTING)
 	if new_image_data_file != image_data_file:
 		var da := DirAccess.open("res://")
-		if da.rename(image_data_file, new_image_data_file) == OK:
-			image_data_file = new_image_data_file
+		da.rename(image_data_file, new_image_data_file)
+		image_data_file = new_image_data_file
 
 func _process(delta: float) -> void:
 	if pending_columns.is_empty():
@@ -119,7 +119,6 @@ func save_data():
 		var section = column.header.name_edit.text
 		
 		if column.item_container.get_child_count() > 0:
-			
 			for item in column.item_container.get_children():
 				var item_id := str("item", item.id)
 				data.set_value(section, item_id, item.text_field.text)
@@ -136,13 +135,13 @@ func save_data():
 					used_images[image] = true
 					item_id += ".image"
 					data.set_value(section, item_id, image_database[image])
-				
-				for imag in image_database.keys():
-					if not imag in used_images:
-						image_database.erase(imag)
-						image_database_updated = true
 		else:
 			data.set_value(section, "__none__", "null")
+	
+	for imag in image_database.keys():
+		if not imag in used_images:
+			image_database.erase(imag)
+			image_database_updated = true
 	
 	data.save(text_data_file)
 	
