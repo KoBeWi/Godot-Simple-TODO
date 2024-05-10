@@ -13,7 +13,7 @@ var counter_queued: bool
 
 func _ready() -> void:
 	undo_redo = UndoRedo.new()
-	undo_redo.max_steps = 20
+	undo_redo.set(&"max_steps", 20) # Using set() for compat.
 	
 	item_placement_holder = create_drag_placement_holder()
 	scroll_container.get_v_scroll_bar().value_changed.connect(update_mirror)
