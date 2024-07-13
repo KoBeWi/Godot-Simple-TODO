@@ -1,8 +1,6 @@
 @tool
 extends HBoxContainer
 
-enum { PASTE_IMAGE, DELETE_IMAGE }
-
 @onready var text_field: TextEdit = %Text
 @onready var image_field: TextureRect = %Image
 @onready var button: Button = $Button
@@ -136,18 +134,12 @@ func drag_panel_input(event: InputEvent):
 				is_marked = true
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not context_menu:
-				context_menu = PopupMenu.new()
-				context_menu.add_item("Paste Image")
-				context_menu.add_item("Delete Image")
+				context_menu = preload("res://addons/SimpleTODO/TODOPopup.gd").new()
+				context_menu.create_item("Paste Image", _paste_image, func() -> bool: return DisplayServer.clipboard_has_image())
+				context_menu.create_item("Delete Image", _delete_image, func() -> bool: return image_field.visible)
 				add_child(context_menu)
-				context_menu.id_pressed.connect(menu_action)
 			
-			context_menu.set_item_disabled(PASTE_IMAGE, not DisplayServer.clipboard_has_image())
-			context_menu.set_item_disabled(DELETE_IMAGE, not image_field.visible)
-			
-			context_menu.reset_size()
-			context_menu.position = Vector2(drag_panel.get_screen_position().x, DisplayServer.mouse_get_position().y)
-			context_menu.popup()
+			context_menu.popup_menu(drag_panel)
 
 # Handles left click being released.
 func _input(event: InputEvent):
@@ -223,33 +215,32 @@ func initialize(text: String, p_id: int):
 func add_to_column(column: Control):
 	column.item_container.add_child(self)
 
-func menu_action(id: int):
-	match id:
-		PASTE_IMAGE:
-			var image := DisplayServer.clipboard_get_image()
-			assert(image)
-			
-			undo_redo.create_action("Paste image")
-			undo_redo.add_do_property(self, &"image_data", image)
-			undo_redo.add_do_method(create_texture)
-			undo_redo.add_do_method(delete_image_popup)
-			undo_redo.add_do_method(request_save)
-			undo_redo.add_undo_property(self, &"image_data", image_data)
-			undo_redo.add_undo_method(create_texture)
-			undo_redo.add_undo_method(delete_image_popup)
-			undo_redo.add_undo_method(request_save)
-			undo_redo.commit_action()
-		DELETE_IMAGE:
-			undo_redo.create_action("Delete image")
-			undo_redo.add_do_property(self, &"image_data", null)
-			undo_redo.add_do_method(create_texture)
-			undo_redo.add_do_method(delete_image_popup)
-			undo_redo.add_do_method(request_save)
-			undo_redo.add_undo_property(self, &"image_data", image_data)
-			undo_redo.add_undo_method(create_texture)
-			undo_redo.add_undo_method(delete_image_popup)
-			undo_redo.add_undo_method(request_save)
-			undo_redo.commit_action()
+func _paste_image():
+	var image := DisplayServer.clipboard_get_image()
+	assert(image)
+	
+	undo_redo.create_action("Paste image")
+	undo_redo.add_do_property(self, &"image_data", image)
+	undo_redo.add_do_method(create_texture)
+	undo_redo.add_do_method(delete_image_popup)
+	undo_redo.add_do_method(request_save)
+	undo_redo.add_undo_property(self, &"image_data", image_data)
+	undo_redo.add_undo_method(create_texture)
+	undo_redo.add_undo_method(delete_image_popup)
+	undo_redo.add_undo_method(request_save)
+	undo_redo.commit_action()
+
+func _delete_image():
+	undo_redo.create_action("Delete image")
+	undo_redo.add_do_property(self, &"image_data", null)
+	undo_redo.add_do_method(create_texture)
+	undo_redo.add_do_method(delete_image_popup)
+	undo_redo.add_do_method(request_save)
+	undo_redo.add_undo_property(self, &"image_data", image_data)
+	undo_redo.add_undo_method(create_texture)
+	undo_redo.add_undo_method(delete_image_popup)
+	undo_redo.add_undo_method(request_save)
+	undo_redo.commit_action()
 
 func create_texture():
 	if image_data:
