@@ -117,7 +117,7 @@ func add_item(from_button := false, at_top := false) -> Control:
 		undo_redo.add_do_method(item_container.move_child.bind(item, 0))
 	undo_redo.add_do_reference(item)
 	undo_redo.add_do_method(request_save)
-	undo_redo.add_undo_method(remove_child.bind(item))
+	undo_redo.add_undo_method(item_container.remove_child.bind(item))
 	undo_redo.add_undo_method(request_save)
 	undo_redo.commit_action()
 	
@@ -167,8 +167,8 @@ func drag_panel_input(event: InputEvent):
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not context_menu:
 				context_menu = preload("res://addons/SimpleTODO/TODOPopup.gd").new()
-				context_menu.create_item("Add Item at Top", add_item.bind(false, true), Callable())
-				context_menu.create_item("Add Item at Bottom", add_item, Callable())
+				context_menu.create_item("Add Item at Top", add_item.bind(true, true), Callable())
+				context_menu.create_item("Add Item at Bottom", add_item.bind(true), Callable())
 				add_child(context_menu)
 			
 			if mirror_header.is_visible_in_tree():
