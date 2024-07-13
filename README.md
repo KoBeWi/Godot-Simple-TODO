@@ -24,6 +24,10 @@ There is also a simple "marker" function. You can middle-click the item's drag f
 
 ![](Media/ReadmeMarker.gif)
 
+You can right-click column's drag field to open a menu, which allows adding item at top, instead of bottom:
+
+![](Media/ReadmeAddTop.gif)
+
 ## Images
 
 You can also add images to your elements. Each element supports only one image. To add image, right-click item's drag field and select Paste Image:

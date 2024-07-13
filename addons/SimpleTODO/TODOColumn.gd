@@ -14,6 +14,7 @@ var undo_redo: UndoRedo
 var item_placement_holder: Panel
 var mirror_header_panel: PanelContainer
 var mirror_header: Control
+var context_menu: PopupMenu
 
 var minimized = false: set = set_minimized
 
@@ -107,11 +108,13 @@ func create_item() -> Control:
 	item.main = main
 	return item
 
-func add_item(from_button := false) -> Control:
+func add_item(from_button := false, at_top := false) -> Control:
 	var item := create_item()
 	
 	undo_redo.create_action("Add Item")
 	undo_redo.add_do_method(item_container.add_child.bind(item))
+	if at_top:
+		undo_redo.add_do_method(item_container.move_child.bind(item, 0))
 	undo_redo.add_do_reference(item)
 	undo_redo.add_do_method(request_save)
 	undo_redo.add_undo_method(remove_child.bind(item))
@@ -141,8 +144,8 @@ func name_changed(_new_text: String) -> void:
 
 # Handles left click being pressed on the drag panel.
 func drag_panel_input(event: InputEvent):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed and !is_dragging:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and !is_dragging:
 			initial_item_index = get_index()
 			get_parent().remove_child(self)
 			main.add_child(self)
@@ -161,6 +164,17 @@ func drag_panel_input(event: InputEvent):
 			item_placement_holder.visible = true
 			item_placement_holder.custom_minimum_size = size
 			item_placement_holder.size = size
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			if not context_menu:
+				context_menu = preload("res://addons/SimpleTODO/TODOPopup.gd").new()
+				context_menu.create_item("Add Item at Top", add_item.bind(false, true), Callable())
+				context_menu.create_item("Add Item at Bottom", add_item, Callable())
+				add_child(context_menu)
+			
+			if mirror_header.is_visible_in_tree():
+				context_menu.popup_menu(mirror_header.drag_panel)
+			else:
+				context_menu.popup_menu(header.drag_panel)
 
 # Handles left click being released.
 func _input(event):
