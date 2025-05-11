@@ -90,7 +90,10 @@ func _get_window_layout(configuration: ConfigFile):
 	configuration.set_value("SimpleTODO", "minimized_tabs", new_minimized_tabs)
 
 func _exit_tree():
-	todo_screen.queue_free()
+	if todo_screen:
+		if todo_screen.undo_redo:
+			todo_screen.undo_redo.free()
+		todo_screen.queue_free()
 
 func _make_visible(visible: bool) -> void:
 	todo_screen.visible = visible
