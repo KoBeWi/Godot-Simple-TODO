@@ -7,7 +7,6 @@ extends HBoxContainer
 @onready var drag_panel: Panel = $DragPanel
 
 var main: Control
-var plugin: EditorPlugin
 var undo_redo: UndoRedo
 
 var item_placement_holder: Panel
@@ -26,21 +25,30 @@ var context_menu: PopupMenu
 var image_data: Image
 var image_popup: PopupPanel
 
+signal save_needed
+
 func _ready() -> void:
+	set_process(false)
+	set_process_input(false)
+	
+	if is_part_of_edited_scene():
+		return
+	
 	undo_redo = main.undo_redo
 	item_placement_holder = main.item_placement_holder
 	next_parent_column = parent_column
-	if plugin:
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		if not is_node_ready():
+			await ready
 		button.icon = get_theme_icon(&"Remove", &"EditorIcons")
-	
-	set_process(false)
-	set_process_input(false)
 
 func delete_pressed() -> void:
 	delete_item()
 
 func request_save() -> void:
-	plugin.save_data()
+	save_needed.emit()
 
 func _process(_delta):
 	if is_dragging:

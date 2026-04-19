@@ -44,7 +44,8 @@ size_flags_stretch_ratio = 0.5
 placeholder_text = "Search Items"
 clear_button_enabled = true
 
-[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1040795978]
+[node name="AddColumn" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1040795978]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Add Column"
@@ -55,6 +56,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Total: 0"
 horizontal_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="ColumnMirror" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer" unique_id=1661071181]
 unique_name_in_owner = true
@@ -74,4 +76,4 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [connection signal="text_changed" from="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/LineEdit" to="." method="filter_elements"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Button" to="." method="add_column" binds= [true]]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/AddColumn" to="." method="add_column" binds= [true]]

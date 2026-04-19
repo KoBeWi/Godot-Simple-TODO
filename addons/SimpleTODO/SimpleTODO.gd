@@ -36,8 +36,8 @@ func _enter_tree():
 	ProjectSettings.settings_changed.connect(on_settings_changed)
 	
 	todo_screen = preload("res://addons/SimpleTODO/TODO.tscn").instantiate()
-	todo_screen.plugin = self
 	todo_screen.hide()
+	todo_screen.save_needed.connect(save_data)
 	
 	get_editor_interface().get_editor_main_screen().add_child(todo_screen)
 	load_data()

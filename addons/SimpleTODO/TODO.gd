@@ -4,12 +4,13 @@ extends Control
 @onready var column_container: Control = %Columns
 @onready var column_mirror: Control = %ColumnMirror
 @onready var scroll_container: ScrollContainer = %ScrollContainer
-
-var plugin: EditorPlugin
+@onready var add_column_button: Button = %AddColumn
 
 var undo_redo: UndoRedo
 var item_placement_holder: Panel
 var counter_queued: bool
+
+signal save_needed
 
 func _ready() -> void:
 	if is_part_of_edited_scene():
@@ -21,6 +22,12 @@ func _ready() -> void:
 	item_placement_holder = create_drag_placement_holder()
 	scroll_container.get_v_scroll_bar().value_changed.connect(update_mirror)
 	update_full_counter()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		if not is_node_ready():
+			await ready
+		add_column_button.icon = get_theme_icon(&"Add", "EditorIcons")
 
 func update_mirror(v: float):
 	column_mirror.visible = v > column_mirror.get_child(0).size.y
@@ -39,11 +46,11 @@ func create_drag_placement_holder() -> Panel:
 func create_column() -> Control:
 	var column = preload("res://addons/SimpleTODO/TODOColumn.tscn").instantiate()
 	column.main = self
-	column.plugin = plugin
 	column.undo_redo = undo_redo
 	
 	column.delete.connect(delete_column.bind(column))
 	column.counter_updated.connect(update_full_counter)
+	column.save_needed.connect(request_save)
 	return column
 
 func add_column(from_button := false) -> Control:
@@ -74,7 +81,7 @@ func delete_column(column):
 	undo_redo.commit_action()
 
 func request_save() -> void:
-	plugin.save_data()
+	save_needed.emit()
 
 func refresh_mirrors():
 	for column in column_container.get_children():

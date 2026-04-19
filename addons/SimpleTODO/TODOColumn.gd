@@ -6,9 +6,9 @@ extends PanelContainer
 @onready var foldable = [item_container, %TopSeparator, %BottomSeparator, %Actions]
 @onready var delete_button = %DeleteColumn
 @onready var timer = $Timer
+@onready var add_item_button: Button = %AddItem
 
 var main: Control
-var plugin: EditorPlugin
 var undo_redo: UndoRedo
 
 var item_placement_holder: Panel
@@ -25,21 +25,22 @@ var item_margin := 20
 
 signal delete
 signal counter_updated
+signal save_needed
 
 func set_minimized(val: bool):
 	minimized = val
 	
-	if plugin:
-		header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
-		mirror_header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
+	header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
+	mirror_header.minimize_button.icon = get_theme_icon(&"ArrowDown" if minimized else &"ArrowUp", &"EditorIcons")
 	
 	for node in foldable:
 		node.visible = not minimized
 
 func _ready() -> void:
+	if is_part_of_edited_scene():
+		return
+	
 	item_placement_holder = main.item_placement_holder
-	if plugin:
-		delete_button.icon = get_theme_icon(&"Remove", &"EditorIcons")
 	
 	mirror_header_panel = PanelContainer.new()
 	main.column_mirror.add_child(mirror_header_panel)
@@ -72,7 +73,10 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_THEME_CHANGED:
-		%AddItem.icon = get_theme_icon(&"Add", &"EditorIcons")
+		if not is_node_ready():
+			await ready
+		add_item_button.icon = get_theme_icon(&"Add", &"EditorIcons")
+		delete_button.icon = get_theme_icon(&"Remove", &"EditorIcons")
 
 func set_title(column_name):
 	header.name_edit.text = column_name
@@ -108,8 +112,8 @@ func _process(delta):
 func create_item() -> Control:
 	var item = preload("res://addons/SimpleTODO/TODOItem.tscn").instantiate()
 	item.parent_column = self
-	item.plugin = plugin
 	item.main = main
+	item.save_needed.connect(request_save)
 	return item
 
 func add_item(from_button := false, at_top := false) -> Control:
@@ -140,7 +144,7 @@ func update_counter() -> void:
 	counter_updated.emit()
 
 func request_save() -> void:
-	plugin.save_data()
+	save_needed.emit()
 
 func name_changed(_new_text: String) -> void:
 	mirror_header.name_edit.text = _new_text
