@@ -70,6 +70,10 @@ func _ready() -> void:
 	item_container.child_entered_tree.connect(update_counter.unbind(1), CONNECT_DEFERRED)
 	item_container.child_exiting_tree.connect(update_counter.unbind(1), CONNECT_DEFERRED)
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		%AddItem.icon = get_theme_icon(&"Add", &"EditorIcons")
+
 func set_title(column_name):
 	header.name_edit.text = column_name
 	mirror_header.name_edit.text = column_name

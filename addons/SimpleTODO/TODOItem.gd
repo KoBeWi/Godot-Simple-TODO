@@ -286,3 +286,5 @@ func text_input(event: InputEvent) -> void:
 			elif event.keycode == KEY_ESCAPE:
 				text_field.release_focus()
 				accept_event()
+			elif event.is_action(&"ui_paste") and DisplayServer.clipboard_has_image():
+				_paste_image()

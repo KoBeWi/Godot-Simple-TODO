@@ -13,7 +13,7 @@ mouse_default_cursor_shape = 13
 [node name="Name" type="LineEdit" parent="." unique_id=1519006288]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Column name"
+placeholder_text = "Column Name"
 
 [node name="Counter" type="Label" parent="." unique_id=1905659556]
 layout_mode = 2

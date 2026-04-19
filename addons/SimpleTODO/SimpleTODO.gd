@@ -10,13 +10,13 @@ var image_data_file := "res://TODO.bin"
 var pending_columns: Array[Control]
 
 var todo_screen: Control
-var image_database: Dictionary#[Image, String]
+var image_database: Dictionary[Image, String]
 
 func _get_plugin_name():
 	return "TODO"
 
 func _get_plugin_icon():
-	return get_editor_interface().get_base_control().get_theme_icon(&"CheckBox", &"EditorIcons")
+	return preload("uid://s166pjhwlrpj")
 
 func _has_main_screen() -> bool:
 	return true
@@ -113,7 +113,7 @@ func _input(event: InputEvent) -> void:
 
 func save_data():
 	var image_database_updated: bool
-	var used_images: Dictionary#[Image, bool]
+	var used_images: Dictionary[Image, bool]
 	
 	var data := ConfigFile.new()
 	for column in todo_screen.column_container.get_children():
@@ -147,7 +147,7 @@ func save_data():
 	data.save(text_data_file)
 	
 	if image_database_updated:
-		var data_to_save: Dictionary#[String, PackedByteArray]
+		var data_to_save: Dictionary[String, PackedByteArray]
 		
 		for imag in image_database:
 			data_to_save[image_database[imag]] = imag.save_png_to_buffer()
@@ -159,12 +159,12 @@ func load_data():
 	var data := ConfigFile.new()
 	data.load(text_data_file)
 	
-	var image_data: Dictionary#[String, PackedByteArray]
+	var image_data: Dictionary[String, PackedByteArray]
 	var image_dataf := FileAccess.open(image_data_file, FileAccess.READ)
 	if image_dataf:
 		var loaded = image_dataf.get_var()
 		if loaded is Dictionary:
-			image_data = loaded
+			image_data.assign(loaded)
 	
 	for section in data.get_sections():
 		var column = todo_screen.create_column()

@@ -12,8 +12,11 @@ var item_placement_holder: Panel
 var counter_queued: bool
 
 func _ready() -> void:
+	if is_part_of_edited_scene():
+		return
+	
 	undo_redo = UndoRedo.new()
-	undo_redo.set(&"max_steps", 20) # Using set() for compat.
+	undo_redo.max_steps = 20
 	
 	item_placement_holder = create_drag_placement_holder()
 	scroll_container.get_v_scroll_bar().value_changed.connect(update_mirror)
