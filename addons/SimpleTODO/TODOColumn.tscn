@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bga0tfe37uva2"]
+[gd_scene format=3 uid="uid://bga0tfe37uva2"]
 
-[ext_resource type="Script" path="res://addons/SimpleTODO/TODOColumn.gd" id="1_6bfuv"]
+[ext_resource type="Script" uid="uid://dkdt24rm0vk3f" path="res://addons/SimpleTODO/TODOColumn.gd" id="1_6bfuv"]
 [ext_resource type="PackedScene" uid="uid://cwcwdmxxpf65e" path="res://addons/SimpleTODO/ColumnHeader.tscn" id="2_0fkhl"]
 
 [sub_resource type="StyleBoxFlat" id="3"]
@@ -14,49 +14,49 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="TODOColumn" type="PanelContainer"]
+[node name="TODOColumn" type="PanelContainer" unique_id=135779698]
 custom_minimum_size = Vector2(400, 0)
 size_flags_vertical = 2
 theme_override_styles/panel = SubResource("3")
 script = ExtResource("1_6bfuv")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=52345202]
 layout_mode = 2
 
-[node name="Header" parent="VBoxContainer" instance=ExtResource("2_0fkhl")]
+[node name="Header" parent="VBoxContainer" unique_id=2110432405 instance=ExtResource("2_0fkhl")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TopSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="TopSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1356434958]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Items" type="VBoxContainer" parent="VBoxContainer"]
+[node name="Items" type="VBoxContainer" parent="VBoxContainer" unique_id=393538773]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="BottomSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="BottomSeparator" type="HSeparator" parent="VBoxContainer" unique_id=461167691]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Actions" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Actions" type="HBoxContainer" parent="VBoxContainer" unique_id=1602730800]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AddItem" type="Button" parent="VBoxContainer/Actions"]
+[node name="AddItem" type="Button" parent="VBoxContainer/Actions" unique_id=568126952]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Add Item"
 text = "+"
 
-[node name="DeleteColumn" type="Button" parent="VBoxContainer/Actions"]
+[node name="DeleteColumn" type="Button" parent="VBoxContainer/Actions" unique_id=240432845]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Delete Column"
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1628619230]
 wait_time = 0.5
 one_shot = true
 

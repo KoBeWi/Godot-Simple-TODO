@@ -1,26 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdesiystlxdb2"]
+[gd_scene format=3 uid="uid://bdesiystlxdb2"]
 
-[ext_resource type="Script" path="res://addons/SimpleTODO/TODOItem.gd" id="1_ecqce"]
+[ext_resource type="Script" uid="uid://3baothnojn0m" path="res://addons/SimpleTODO/TODOItem.gd" id="1_ecqce"]
 
-[node name="TODOItem" type="HBoxContainer"]
+[node name="TODOItem" type="HBoxContainer" unique_id=906729856]
 offset_right = 315.0
 offset_bottom = 35.0
 mouse_filter = 2
 script = ExtResource("1_ecqce")
 
-[node name="DragPanel" type="Panel" parent="."]
+[node name="DragPanel" type="Panel" parent="." unique_id=552510251]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 tooltip_text = "Right-click to open menu.
 Middle-click to mark/unmark."
 mouse_default_cursor_shape = 13
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1660899715]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Text" type="TextEdit" parent="VBoxContainer"]
+[node name="Text" type="TextEdit" parent="VBoxContainer" unique_id=1505499207]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -29,7 +29,7 @@ text = "TODO"
 wrap_mode = 1
 scroll_fit_content_height = true
 
-[node name="Image" type="TextureRect" parent="VBoxContainer"]
+[node name="Image" type="TextureRect" parent="VBoxContainer" unique_id=124986573]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 100)
@@ -39,11 +39,11 @@ mouse_default_cursor_shape = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=889907214]
 layout_mode = 2
 tooltip_text = "Delete Item"
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=2073236573]
 wait_time = 0.5
 one_shot = true
 

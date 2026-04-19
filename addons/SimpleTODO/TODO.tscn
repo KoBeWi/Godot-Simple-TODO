@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://yf8y5e74vv4o"]
+[gd_scene format=3 uid="uid://yf8y5e74vv4o"]
 
-[ext_resource type="Script" path="res://addons/SimpleTODO/TODO.gd" id="1_wo5wb"]
+[ext_resource type="Script" uid="uid://c6ams44cvytp8" path="res://addons/SimpleTODO/TODO.gd" id="1_wo5wb"]
 
-[node name="TODO" type="Control"]
+[node name="TODO" type="Control" unique_id=1317409297]
 clip_contents = true
 layout_mode = 3
 anchors_preset = 15
@@ -14,7 +14,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_wo5wb")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=829114626]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,58 +24,58 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=2110498781]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=289895078]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer" unique_id=669549944]
 layout_mode = 2
 theme_override_constants/separation = 100
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=604174190]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Total" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="Total" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=219544177]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
-text = "Total: %d"
+text = "Total: 0"
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1067519632]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer2" unique_id=1040795978]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Add column"
 
-[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1219619594]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer3"]
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer3" unique_id=43839202]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 placeholder_text = "Search Items"
 clear_button_enabled = true
 
-[node name="ColumnMirror" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="ColumnMirror" type="Control" parent="VBoxContainer/PanelContainer/VBoxContainer" unique_id=1661071181]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=898795049]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Columns" type="HBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="Columns" type="HBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=751935778]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
