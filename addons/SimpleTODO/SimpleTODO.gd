@@ -24,19 +24,11 @@ func _has_main_screen() -> bool:
 func _init() -> void:
 	add_plugin_translations_from_directory("res://addons/SimpleTODO/Translations")
 
-func setup_setting(setting: String, initial_value: String):
-	if not ProjectSettings.has_setting(setting):
-		ProjectSettings.set_setting(setting, initial_value)
-	
-	ProjectSettings.add_property_info({ "name": setting, "type": TYPE_STRING, "hint": PROPERTY_HINT_SAVE_FILE })
-	ProjectSettings.set_initial_value(setting, initial_value)
-
 func _enter_tree():
-	setup_setting(TEXT_DATA_SETTING, text_data_file)
-	text_data_file = ProjectSettings.get_setting(TEXT_DATA_SETTING)
-	setup_setting(IMAGE_DATA_SETTING, image_data_file)
-	image_data_file = ProjectSettings.get_setting(IMAGE_DATA_SETTING)
-	ProjectSettings.settings_changed.connect(on_settings_changed)
+	text_data_file = define_project_setting(TEXT_DATA_SETTING, text_data_file, PROPERTY_HINT_SAVE_FILE)
+	image_data_file = define_project_setting(IMAGE_DATA_SETTING, image_data_file, PROPERTY_HINT_SAVE_FILE)
+	track_project_setting(TEXT_DATA_SETTING)
+	track_project_setting(IMAGE_DATA_SETTING)
 	
 	todo_screen = preload("res://addons/SimpleTODO/TODO.tscn").instantiate()
 	todo_screen.hide()
@@ -48,18 +40,25 @@ func _enter_tree():
 func _ready() -> void:
 	set_process_input(false)
 
-func on_settings_changed():
-	var new_text_data_file: String = ProjectSettings.get_setting(TEXT_DATA_SETTING)
-	if new_text_data_file != text_data_file:
-		var da := DirAccess.open("res://")
-		da.rename(text_data_file, new_text_data_file)
-		text_data_file = new_text_data_file
-	
-	var new_image_data_file: String = ProjectSettings.get_setting(IMAGE_DATA_SETTING)
-	if new_image_data_file != image_data_file:
-		var da := DirAccess.open("res://")
-		da.rename(image_data_file, new_image_data_file)
-		image_data_file = new_image_data_file
+func _on_setting_changed(setting: String):
+	if setting == TEXT_DATA_SETTING:
+		var new_text_data_file: String = ProjectSettings.get_setting(TEXT_DATA_SETTING)
+		if new_text_data_file != text_data_file:
+			var da := DirAccess.open("res://")
+			da.rename(text_data_file, new_text_data_file)
+			
+			EditorInterface.get_resource_filesystem().update_file(text_data_file)
+			EditorInterface.get_resource_filesystem().update_file(new_text_data_file)
+			text_data_file = new_text_data_file
+	elif setting == IMAGE_DATA_SETTING:
+		var new_image_data_file: String = ProjectSettings.get_setting(IMAGE_DATA_SETTING)
+		if new_image_data_file != image_data_file:
+			var da := DirAccess.open("res://")
+			da.rename(image_data_file, new_image_data_file)
+			
+			EditorInterface.get_resource_filesystem().update_file(image_data_file)
+			EditorInterface.get_resource_filesystem().update_file(new_image_data_file)
+			image_data_file = new_image_data_file
 
 func _process(delta: float) -> void:
 	if pending_columns.is_empty():
