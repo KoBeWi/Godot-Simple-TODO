@@ -1,0 +1,93 @@
+# LANGUAGE translation for  for the following files:
+# res://addons/SimpleTODO/ColumnHeader.tscn
+# res://addons/SimpleTODO/TODO.gd
+# res://addons/SimpleTODO/TODO.tscn
+# res://addons/SimpleTODO/TODOColumn.gd
+# res://addons/SimpleTODO/TODOColumn.tscn
+# res://addons/SimpleTODO/TODOItem.gd
+# res://addons/SimpleTODO/TODOItem.tscn
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: addons/SimpleTODO/ColumnHeader.tscn
+msgid ""
+"LMB - Drag column.\n"
+"RMB - Show context menu."
+msgstr ""
+
+#: addons/SimpleTODO/ColumnHeader.tscn
+msgid "Column Name"
+msgstr ""
+
+#: addons/SimpleTODO/ColumnHeader.tscn
+msgid "Fold/Unfold"
+msgstr ""
+
+#: addons/SimpleTODO/TODO.gd:61
+#: addons/SimpleTODO/TODO.tscn
+msgid "Add Column"
+msgstr ""
+
+#: addons/SimpleTODO/TODO.gd:77
+#: addons/SimpleTODO/TODOColumn.tscn
+msgid "Delete Column"
+msgstr ""
+
+#: addons/SimpleTODO/TODO.gd:106
+msgid "Total: %d"
+msgstr ""
+
+#: addons/SimpleTODO/TODO.tscn
+msgid "Search Items"
+msgstr ""
+
+#: addons/SimpleTODO/TODOColumn.gd:127
+#: addons/SimpleTODO/TODOColumn.tscn
+msgid "Add Item"
+msgstr ""
+
+#: addons/SimpleTODO/TODOColumn.gd:183
+msgid "Add Item at Top"
+msgstr ""
+
+#: addons/SimpleTODO/TODOColumn.gd:184
+msgid "Add Item at Bottom"
+msgstr ""
+
+#: addons/SimpleTODO/TODOItem.gd:146
+#: addons/SimpleTODO/TODOItem.gd:232
+msgid "Paste Image"
+msgstr ""
+
+#: addons/SimpleTODO/TODOItem.gd:147
+#: addons/SimpleTODO/TODOItem.gd:244
+msgid "Delete Image"
+msgstr ""
+
+#: addons/SimpleTODO/TODOItem.gd:149
+msgid "Toggle Marker"
+msgstr ""
+
+#: addons/SimpleTODO/TODOItem.gd:186
+msgid "Move Item"
+msgstr ""
+
+#: addons/SimpleTODO/TODOItem.gd:204
+#: addons/SimpleTODO/TODOItem.tscn
+msgid "Delete Item"
+msgstr ""
+
+#: addons/SimpleTODO/TODOItem.tscn
+msgid ""
+"LMB - Drag item.\n"
+"RMB - Show context menu.\n"
+"MMB - Toggle marker."
+msgstr ""

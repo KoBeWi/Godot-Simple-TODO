@@ -2,6 +2,15 @@
 
 [ext_resource type="Script" uid="uid://3baothnojn0m" path="res://addons/SimpleTODO/TODOItem.gd" id="1_ecqce"]
 
+[sub_resource type="DPITexture" id="DPITexture_wyra5"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m5 1v1h-4v2h14v-2h-4v-1zm-3 4v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8zm1 2h2v6h-2zm4 0h2v6h-2zm4 0h2v6h-2z\"/></svg>
+"
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
 [node name="TODOItem" type="HBoxContainer" unique_id=906729856]
 offset_right = 315.0
 offset_bottom = 35.0
@@ -11,8 +20,9 @@ script = ExtResource("1_ecqce")
 [node name="DragPanel" type="Panel" parent="." unique_id=552510251]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
-tooltip_text = "Right-click to open menu.
-Middle-click to mark/unmark."
+tooltip_text = "LMB - Drag item.
+RMB - Show context menu.
+MMB - Toggle marker."
 mouse_default_cursor_shape = 13
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1660899715]
@@ -42,6 +52,7 @@ stretch_mode = 5
 [node name="Button" type="Button" parent="." unique_id=889907214]
 layout_mode = 2
 tooltip_text = "Delete Item"
+icon = SubResource("DPITexture_wyra5")
 
 [node name="Timer" type="Timer" parent="." unique_id=2073236573]
 wait_time = 0.5

@@ -24,7 +24,9 @@ func _ready() -> void:
 	update_full_counter()
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_THEME_CHANGED:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
+		update_full_counter()
+	elif what == NOTIFICATION_THEME_CHANGED:
 		if not is_node_ready():
 			await ready
 		add_column_button.icon = get_theme_icon(&"Add", "EditorIcons")
@@ -56,7 +58,7 @@ func create_column() -> Control:
 func add_column(from_button := false) -> Control:
 	var column := create_column()
 	
-	undo_redo.create_action("Add Column")
+	undo_redo.create_action(tr("Add Column"))
 	undo_redo.add_do_method(column_container.add_child.bind(column))
 	undo_redo.add_do_reference(column)
 	undo_redo.add_do_method(request_save)
@@ -72,7 +74,7 @@ func add_column(from_button := false) -> Control:
 	return column
 
 func delete_column(column):
-	undo_redo.create_action("Delete Column")
+	undo_redo.create_action(tr("Delete Column"))
 	undo_redo.add_do_method(column_container.remove_child.bind(column))
 	undo_redo.add_do_method(request_save)
 	undo_redo.add_undo_method(column_container.add_child.bind(column))
@@ -101,7 +103,7 @@ func update_full_counter():
 	_update_full_counter.call_deferred()
 
 func _update_full_counter():
-	%Total.text = str("Total: %d" % column_container.get_children().reduce(func(accum: int, column: Node) -> int:
+	%Total.text = str(tr("Total: %d") % column_container.get_children().reduce(func(accum: int, column: Node) -> int:
 		if &"item_container" in column:
 			return accum + column.item_container.get_child_count()
 		else:

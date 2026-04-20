@@ -23,9 +23,14 @@ var initial_item_index := 0
 var current_drag_item_index := 0
 var item_margin := 20
 
+var notr := RefCounted.new()
+
 signal delete
 signal counter_updated
 signal save_needed
+
+func _init() -> void:
+	notr.set_message_translation(false)
 
 func set_minimized(val: bool):
 	minimized = val
@@ -119,7 +124,7 @@ func create_item() -> Control:
 func add_item(from_button := false, at_top := false) -> Control:
 	var item := create_item()
 	
-	undo_redo.create_action("Add Item")
+	undo_redo.create_action(tr("Add Item"))
 	undo_redo.add_do_method(item_container.add_child.bind(item))
 	if at_top:
 		undo_redo.add_do_method(item_container.move_child.bind(item, 0))
@@ -175,8 +180,8 @@ func drag_panel_input(event: InputEvent):
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not context_menu:
 				context_menu = preload("res://addons/SimpleTODO/TODOPopup.gd").new()
-				context_menu.create_item("Add Item at Top", add_item.bind(true, true), Callable())
-				context_menu.create_item("Add Item at Bottom", add_item.bind(true), Callable())
+				context_menu.create_item(notr.tr("Add Item at Top"), add_item.bind(true, true))
+				context_menu.create_item(notr.tr("Add Item at Bottom"), add_item.bind(true))
 				add_child(context_menu)
 			
 			if mirror_header.is_visible_in_tree():
