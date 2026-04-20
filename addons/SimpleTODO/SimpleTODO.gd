@@ -100,19 +100,19 @@ func _make_visible(visible: bool) -> void:
 	todo_screen.visible = visible
 	set_process_input(visible)
 
-func _input(event: InputEvent) -> void:
-	if get_viewport().gui_get_focus_owner() is TextEdit:
+func _shortcut_input(event: InputEvent) -> void:
+	if not todo_screen.is_visible_in_tree():
 		return
 	
-	if event is InputEventKey:
-		if event.pressed:
-			if event.is_command_or_control_pressed():
-				if event.keycode == KEY_Z:
-					todo_screen.undo_redo.undo()
-					get_viewport().set_input_as_handled()
-				elif event.keycode == KEY_Y:
-					todo_screen.undo_redo.redo()
-					get_viewport().set_input_as_handled()
+	if not event.is_pressed() or event.is_echo():
+		return
+	
+	if event.is_action(&"ui_undo", true):
+		todo_screen.undo_redo.undo()
+		get_viewport().set_input_as_handled()
+	elif event.is_action(&"ui_redo", true):
+		todo_screen.undo_redo.redo()
+		get_viewport().set_input_as_handled()
 
 func save_data():
 	var image_database_updated: bool
@@ -121,26 +121,29 @@ func save_data():
 	var data := ConfigFile.new()
 	for column in todo_screen.column_container.get_children():
 		var section = column.header.name_edit.text
+		if section.is_empty():
+			section = "__column%d__" % column.get_index()
 		
-		if column.item_container.get_child_count() > 0:
-			for item in column.item_container.get_children():
-				var item_id := str("item", item.id)
-				data.set_value(section, item_id, item.text_field.text)
-				
-				var image: Image = item.image_data
-				if image:
-					if not image in image_database:
-						var id: PackedStringArray
-						for i in 8:
-							id.append(char(randi_range(33, 125)))
-						image_database[image] = "".join(id)
-						image_database_updated = true
-					
-					used_images[image] = true
-					item_id += ".image"
-					data.set_value(section, item_id, image_database[image])
-		else:
+		if column.item_container.get_child_count() == 0:
 			data.set_value(section, "__none__", "null")
+			continue
+		
+		for item in column.item_container.get_children():
+			var item_id := str("item", item.id)
+			data.set_value(section, item_id, item.text_field.text)
+			
+			var image: Image = item.image_data
+			if image:
+				if not image in image_database:
+					var id: PackedStringArray
+					for i in 8:
+						id.append(char(randi_range(33, 125)))
+					image_database[image] = "".join(id)
+					image_database_updated = true
+				
+				used_images[image] = true
+				item_id += ".image"
+				data.set_value(section, item_id, image_database[image])
 	
 	for imag in image_database.keys():
 		if not imag in used_images:
@@ -171,7 +174,8 @@ func load_data():
 	
 	for section in data.get_sections():
 		var column = todo_screen.create_column()
-		column.ready.connect(column.set_title.bind(section))
+		if not section.begins_with("__column"):
+			column.ready.connect(column.set_title.bind(section))
 		pending_columns.append(column)
 		
 		for item in data.get_section_keys(section):
