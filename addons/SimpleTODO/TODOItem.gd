@@ -183,7 +183,7 @@ func remove_self_safe():
 func move_item(index):
 	index = mini(index, next_parent_column.item_container.get_child_count())
 	
-	undo_redo.create_action(tr("Move Item"))
+	undo_redo.create_action("Move Item")
 	
 	undo_redo.add_do_method(remove_self_safe)
 	undo_redo.add_do_method(next_parent_column.item_container.add_child.bind(self))
@@ -201,7 +201,7 @@ func move_item(index):
 	undo_redo.commit_action()
 
 func delete_item():
-	undo_redo.create_action(tr("Delete Item"))
+	undo_redo.create_action("Delete Item")
 	undo_redo.add_do_method(parent_column.item_container.remove_child.bind(self))
 	undo_redo.add_do_method(parent_column.request_save)
 	undo_redo.add_undo_method(parent_column.item_container.add_child.bind(self))
@@ -229,7 +229,7 @@ func _paste_image():
 	var image := DisplayServer.clipboard_get_image()
 	assert(image)
 	
-	undo_redo.create_action(tr("Paste Image"))
+	undo_redo.create_action("Paste Image")
 	undo_redo.add_do_property(self, &"image_data", image)
 	undo_redo.add_do_method(create_texture)
 	undo_redo.add_do_method(delete_image_popup)
@@ -241,7 +241,7 @@ func _paste_image():
 	undo_redo.commit_action()
 
 func _delete_image():
-	undo_redo.create_action(tr("Delete Image"))
+	undo_redo.create_action("Delete Image")
 	undo_redo.add_do_property(self, &"image_data", null)
 	undo_redo.add_do_method(create_texture)
 	undo_redo.add_do_method(delete_image_popup)

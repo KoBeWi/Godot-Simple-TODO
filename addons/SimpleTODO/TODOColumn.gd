@@ -124,7 +124,7 @@ func create_item() -> Control:
 func add_item(from_button := false, at_top := false) -> Control:
 	var item := create_item()
 	
-	undo_redo.create_action(tr("Add Item"))
+	undo_redo.create_action("Add Item")
 	undo_redo.add_do_method(item_container.add_child.bind(item))
 	if at_top:
 		undo_redo.add_do_method(item_container.move_child.bind(item, 0))
@@ -157,8 +157,9 @@ func name_changed(_new_text: String) -> void:
 
 # Handles left click being pressed on the drag panel.
 func drag_panel_input(event: InputEvent):
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT and !is_dragging:
+	var mb := event as InputEventMouseButton
+	if mb and mb.pressed:
+		if mb.button_index == MOUSE_BUTTON_LEFT and not is_dragging:
 			initial_item_index = get_index()
 			get_parent().remove_child(self)
 			main.add_child(self)
@@ -177,7 +178,7 @@ func drag_panel_input(event: InputEvent):
 			item_placement_holder.visible = true
 			item_placement_holder.custom_minimum_size = size
 			item_placement_holder.size = size
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
+		elif mb.button_index == MOUSE_BUTTON_RIGHT:
 			if not context_menu:
 				context_menu = preload("res://addons/SimpleTODO/TODOPopup.gd").new()
 				context_menu.create_item(notr.tr("Add Item at Top"), add_item.bind(true, true))
@@ -190,31 +191,31 @@ func drag_panel_input(event: InputEvent):
 				context_menu.popup_menu(header.drag_panel)
 
 # Handles left click being released.
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and is_dragging:
-			set_process(false)
-			set_process_input(false)
-			is_dragging = false
-			
-			size_flags_vertical = SIZE_EXPAND
-			reset_size()
-			
-			if item_placement_holder:
-				item_placement_holder.size_flags_vertical = SIZE_FILL
-				item_placement_holder.visible = false
-				item_placement_holder.get_parent().remove_child(item_placement_holder)
-				main.add_child(item_placement_holder)
-			
-			get_parent().remove_child(self)
-			main.column_container.add_child(self)
-			move_column(current_drag_item_index)
-			
-			current_drag_item_index = 0
-			initial_item_index = 0
-			main.refresh_mirrors()
+func _input(event: InputEvent):
+	var mb := event as InputEventMouseButton
+	if mb and mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed and is_dragging:
+		set_process(false)
+		set_process_input(false)
+		is_dragging = false
+		
+		size_flags_vertical = SIZE_EXPAND
+		reset_size()
+		
+		if item_placement_holder:
+			item_placement_holder.size_flags_vertical = SIZE_FILL
+			item_placement_holder.visible = false
+			item_placement_holder.get_parent().remove_child(item_placement_holder)
+			main.add_child(item_placement_holder)
+		
+		get_parent().remove_child(self)
+		main.column_container.add_child(self)
+		move_column(current_drag_item_index)
+		
+		current_drag_item_index = 0
+		initial_item_index = 0
+		main.refresh_mirrors()
 
-func move_column(index):
+func move_column(index: int):
 	undo_redo.create_action("Move Column")
 
 	undo_redo.add_do_method(main.column_container.move_child.bind(self, index))

@@ -46,6 +46,10 @@ Images are stored separately in a .bin file (which is a serialized Dictionary). 
 
 The text data is stored in file defined by `addons/simple_todo/text_data_file` project setting (`res://TODO.cfg` by default), while images are stored in `addons/simple_todo/image_data_file` (`res://TODO.bin` by default). Changing either project setting will automatically move the file.
 
+## Localization
+
+The addon supports translations and will automatically use the editor's language, if available. Currently only Polish translation is available. To make a new translation use the `SimpleTODO.pot` file found in the addon's folder and feel free to open a pull request.
+
 ___
 You can find all my addons on my [profile page](https://github.com/KoBeWi).
 

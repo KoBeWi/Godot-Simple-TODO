@@ -13,63 +13,71 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8-bit\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
 
 #: addons/SimpleTODO/ColumnHeader.tscn
 msgid ""
 "LMB - Drag column.\n"
 "RMB - Show context menu."
 msgstr ""
+"LPM - Przeciągnij kolumnę.\n"
+"PPM - Pokaż menu kontekstowe."
 
 #: addons/SimpleTODO/ColumnHeader.tscn
 msgid "Column Name"
-msgstr ""
+msgstr "Nazwa kolumny"
 
 #: addons/SimpleTODO/ColumnHeader.tscn
 msgid "Fold/Unfold"
-msgstr ""
+msgstr "Zwiń/Rozwiń"
 
 #: addons/SimpleTODO/TODO.gd:106
 msgid "Total: %d"
-msgstr ""
+msgstr "Razem: %d"
 
 #: addons/SimpleTODO/TODO.tscn
 msgid "Search Items"
-msgstr ""
+msgstr "Szukaj elementów"
 
 #: addons/SimpleTODO/TODO.tscn
 msgid "Add Column"
-msgstr ""
+msgstr "Dodaj kolumnę"
 
 #: addons/SimpleTODO/TODOColumn.gd:184
 msgid "Add Item at Top"
-msgstr ""
+msgstr "Dodaj element na górze"
 
 #: addons/SimpleTODO/TODOColumn.gd:185
 msgid "Add Item at Bottom"
-msgstr ""
+msgstr "Dodaj element na dole"
 
 #: addons/SimpleTODO/TODOColumn.tscn
 msgid "Add Item"
-msgstr ""
+msgstr "Dodaj element"
 
 #: addons/SimpleTODO/TODOColumn.tscn
 msgid "Delete Column"
-msgstr ""
+msgstr "Usuń kolumnę"
 
 #: addons/SimpleTODO/TODOItem.gd:146
 msgid "Paste Image"
-msgstr ""
+msgstr "Wklej obrazek"
 
 #: addons/SimpleTODO/TODOItem.gd:147
 msgid "Delete Image"
-msgstr ""
+msgstr "Usuń obrazek"
 
 #: addons/SimpleTODO/TODOItem.gd:149
 msgid "Toggle Marker"
-msgstr ""
+msgstr "Przełącz znacznik"
 
 #: addons/SimpleTODO/TODOItem.tscn
 msgid ""
@@ -77,7 +85,6 @@ msgid ""
 "RMB - Show context menu.\n"
 "MMB - Toggle marker."
 msgstr ""
-
-#: addons/SimpleTODO/TODOItem.tscn
-msgid "Delete Item"
-msgstr ""
+"LPM - Przeciągnij element.\n"
+"PPM - Pokaż menu kontekstowe.\n"
+"ŚPM - Przełącz znacznik."

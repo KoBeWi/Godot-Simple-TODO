@@ -58,7 +58,7 @@ func create_column() -> Control:
 func add_column(from_button := false) -> Control:
 	var column := create_column()
 	
-	undo_redo.create_action(tr("Add Column"))
+	undo_redo.create_action("Add Column")
 	undo_redo.add_do_method(column_container.add_child.bind(column))
 	undo_redo.add_do_reference(column)
 	undo_redo.add_do_method(request_save)
@@ -74,7 +74,7 @@ func add_column(from_button := false) -> Control:
 	return column
 
 func delete_column(column):
-	undo_redo.create_action(tr("Delete Column"))
+	undo_redo.create_action("Delete Column")
 	undo_redo.add_do_method(column_container.remove_child.bind(column))
 	undo_redo.add_do_method(request_save)
 	undo_redo.add_undo_method(column_container.add_child.bind(column))

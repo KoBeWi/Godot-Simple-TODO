@@ -1,5 +1,5 @@
 @tool
-extends EditorPlugin
+extends "ExtendedEditorPlugin.gd"
 
 const TEXT_DATA_SETTING = "addons/simple_todo/text_data_file"
 const IMAGE_DATA_SETTING = "addons/simple_todo/image_data_file"
@@ -20,6 +20,9 @@ func _get_plugin_icon():
 
 func _has_main_screen() -> bool:
 	return true
+
+func _init() -> void:
+	add_plugin_translations_from_directory("res://addons/SimpleTODO/Translations")
 
 func setup_setting(setting: String, initial_value: String):
 	if not ProjectSettings.has_setting(setting):
