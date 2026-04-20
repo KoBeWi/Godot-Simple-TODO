@@ -46,19 +46,19 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 100
 
+[node name="AddColumn" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1040795978]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Add Column"
+icon = SubResource("DPITexture_32ygo")
+
 [node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=43839202]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 placeholder_text = "Search Items"
 clear_button_enabled = true
-
-[node name="AddColumn" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1040795978]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 10
-text = "Add Column"
-icon = SubResource("DPITexture_32ygo")
 
 [node name="Total" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer" unique_id=219544177]
 unique_name_in_owner = true
@@ -86,5 +86,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[connection signal="text_changed" from="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/LineEdit" to="." method="filter_elements"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/AddColumn" to="." method="add_column" binds= [true]]
+[connection signal="text_changed" from="VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/LineEdit" to="." method="filter_elements"]

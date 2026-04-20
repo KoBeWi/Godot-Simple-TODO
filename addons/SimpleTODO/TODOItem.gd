@@ -1,10 +1,13 @@
 @tool
 extends HBoxContainer
 
+@export var image_border: StyleBox
+
 @onready var text_field: TextEdit = %Text
 @onready var image_field: TextureRect = %Image
 @onready var button: Button = $Button
 @onready var drag_panel: Panel = $DragPanel
+@onready var marker: Control = %Marker
 
 var main: Control
 var undo_redo: UndoRedo
@@ -48,6 +51,7 @@ func _notification(what: int) -> void:
 		if not is_node_ready():
 			await ready
 		button.icon = get_theme_icon(&"Remove", &"EditorIcons")
+		marker.modulate = Color(get_theme_color(&"accent_color", &"Editor"), 0.8)
 
 func delete_pressed() -> void:
 	delete_item()
@@ -253,12 +257,8 @@ func _delete_image():
 	undo_redo.commit_action()
 
 func _toggle_marker():
-	if is_marked:
-		drag_panel.modulate = Color.WHITE
-		is_marked = false
-	else:
-		drag_panel.modulate = EditorInterface.get_editor_theme().get_color(&"accent_color", &"Editor")
-		is_marked = true
+	is_marked = not is_marked
+	marker.visible = is_marked
 
 func create_texture():
 	if image_data:
@@ -278,7 +278,7 @@ func image_input(event: InputEvent) -> void:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			if not image_popup:
 				image_popup = PopupPanel.new()
-				image_popup.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Tree"))
+				image_popup.add_theme_stylebox_override(&"panel", image_border)
 				add_child(image_popup)
 				
 				var pattern := TextureRect.new()
@@ -291,7 +291,7 @@ func image_input(event: InputEvent) -> void:
 				
 				image_popup.add_child(big_image)
 			
-			image_popup.popup_centered()
+			image_popup.popup_centered_clamped(Vector2i(), 0.8)
 
 func text_input(event: InputEvent) -> void:
 	if event is InputEventKey:
