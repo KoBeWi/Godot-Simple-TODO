@@ -1,0 +1,94 @@
+# LANGUAGE translation for  for the following files:
+# res://addons/SimpleTODO/ColumnHeader.tscn
+# res://addons/SimpleTODO/TODO.gd
+# res://addons/SimpleTODO/TODO.tscn
+# res://addons/SimpleTODO/TODOColumn.gd
+# res://addons/SimpleTODO/TODOColumn.tscn
+# res://addons/SimpleTODO/TODOItem.gd
+# res://addons/SimpleTODO/TODOItem.tscn
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: addons/SimpleTODO/ColumnHeader.tscn
+msgid ""
+"LMB - Drag column.\n"
+"RMB - Show context menu."
+msgstr ""
+"左键 - 拖拽列\n"
+"右键 - 显示选项菜单"
+
+#: addons/SimpleTODO/ColumnHeader.tscn
+msgid "Column Name"
+msgstr "列名称"
+
+#: addons/SimpleTODO/ColumnHeader.tscn
+msgid "Fold/Unfold"
+msgstr "折叠/展开"
+
+#: addons/SimpleTODO/TODO.gd:106
+msgid "Total: %d"
+msgstr "总计项数：%d"
+
+#: addons/SimpleTODO/TODO.tscn
+msgid "Search Items"
+msgstr "搜索项"
+
+#: addons/SimpleTODO/TODO.tscn
+msgid "Add Column"
+msgstr "添加列"
+
+#: addons/SimpleTODO/TODOColumn.gd:184
+msgid "Add Item at Top"
+msgstr "在顶部添加项"
+
+#: addons/SimpleTODO/TODOColumn.gd:185
+msgid "Add Item at Bottom"
+msgstr "在底部添加项"
+
+#: addons/SimpleTODO/TODOColumn.tscn
+msgid "Add Item"
+msgstr "添加项"
+
+#: addons/SimpleTODO/TODOColumn.tscn
+msgid "Delete Column"
+msgstr "删除列"
+
+#: addons/SimpleTODO/TODOItem.gd:146
+msgid "Paste Image"
+msgstr "粘贴图片"
+
+#: addons/SimpleTODO/TODOItem.gd:147
+msgid "Delete Image"
+msgstr "删除图片"
+
+#: addons/SimpleTODO/TODOItem.gd:149
+msgid "Toggle Marker"
+msgstr "创建/删除标记"
+
+#: addons/SimpleTODO/TODOItem.tscn
+msgid ""
+"LMB - Drag item.\n"
+"RMB - Show context menu.\n"
+"MMB - Toggle marker."
+msgstr ""
+"左键 - 拖拽项\n"
+"右键 - 显示选项菜单\n"
+"中键 - 创建/删除标记"
+
+#: addons/SimpleTODO/TODOItem.tscn
+msgid "Delete Item"
+msgstr "删除项"
