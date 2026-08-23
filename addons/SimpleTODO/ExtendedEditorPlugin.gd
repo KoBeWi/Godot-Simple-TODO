@@ -2,6 +2,7 @@ extends EditorPlugin
 
 var _translation_list: Array[Translation]
 var _tracked_settings: PackedStringArray
+var _updating_translations: bool
 
 var tr_extract: RefCounted
 
@@ -85,6 +86,21 @@ func _notification(what: int) -> void:
 			domain.add_translation(translation)
 		
 		return
+	
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		if _updating_translations:
+			return
+		var any_missing: bool
+		
+		var domain := TranslationServer.get_or_add_domain(&"godot.editor")
+		for translation in _translation_list:
+			any_missing = any_missing or not domain.has_translation(translation)
+			domain.add_translation(translation)
+		
+		if any_missing:
+			_updating_translations = true
+			get_tree().root.propagate_notification(NOTIFICATION_TRANSLATION_CHANGED)
+			_updating_translations = false
 	
 	if what == NOTIFICATION_EXIT_TREE:
 		var domain := TranslationServer.get_or_add_domain(&"godot.editor")
